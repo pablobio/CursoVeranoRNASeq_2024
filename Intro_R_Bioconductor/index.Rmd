@@ -1,0 +1,1757 @@
+---
+title: "Introdducción a R y Bioconductor"
+author: "Pablo Fonseca"
+date: "13-07-2023"
+output:
+  html_document:
+    df_print: paged
+  github_document: toc:true
+---
+
+# **Introducción a la lógica de programación** {style="text-align:center"}
+La lógica de programación es uno de los temas más importantes para aprender cualquier lenguaje de programación. En nuestra vida cotidiana, todas nuestras acciones se basan en la toma de decisiones lógicas, aunque sucedan en microsegundos. 
+
+Por ejemplo:
+
+> Llega a casa por la noche después de un día de trabajo y quiere encontrar el mando a distancia del televisor en su habitación. Para ello, tienes que tomar algunas decisiones. La primera es encender la luz. Después, localizarás el mando. Por último, encenderá el televisor.
+
+En programación, las cosas no son diferentes. Todas las acciones se basan en razonamientos lógicos previamente definidos. Por lo tanto, el propósito de la lógica de programación es encontrar la mejor solución a un problema dado.
+
+En programación, para encontrar la mejor solución, siempre contrastaremos dos características: **Rendimiento X Seguridad**. 
+
+> Supongamos que la tarea a realizar es cruzar la calle. Esta tarea se puede realizar de varias maneras. Puede partir del punto "A" y llegar al punto "B" simplemente cruzando la calle por cualquier sitio. Su objetivo se habrá cumplido. Sin embargo, también puede llegar al punto "B" cruzando la calle por el paso de cebra cuando el semáforo está cerrado para los coches.
+
+En la situación anterior, en ambos casos se alcanzó el objetivo final. Sin embargo, la relación rendimiento/seguridad en cada uno de ellos es bastante diferente. En programación, evaluaremos constantemente las situaciones en función de esta relación. En algunos casos, el rendimiento es más deseable que la seguridad. Pero en otros casos, la seguridad debe considerarse en primer lugar, independientemente de si perdemos un poco en rendimiento. 
+
+La lógica de programación también es responsable de enseñar todo lo que podemos hacer con cualquier lenguaje de programación. En otras palabras, se ocupa del núcleo de la programación, los procesos comunes a los distintos lenguajes existentes. En el estudio de la lógica no se abordan los comandos ni las especificidades de cada lenguaje. 
+
+En ausencia de lógica, las tareas sencillas pueden convertirse en tareas de ejecución extremadamente complicadas. Utilizando un ejemplo extrapolado, la ausencia de lógica podría llevar a construir una casa empezando por el tejado y construyendo los cimientos a su alrededor. Se conseguirá el objetivo final. Sin embargo, el tiempo y los recursos empleados para ello serán probablemente inifinitamente mayores que si se aplicara la lógica.
+
+Las herramientas utilizadas para aplicar la lógica en la programación son los **algoritmos**.
+
+### Algoritmos
+
+**¿Qué es un algoritmo?**
+
+> Un algoritmo puede considerarse un proceso de toma de decisiones paso a paso para resolver un problema. 
+
+Es decir, el algoritmo **NO es la solución** para el programa, pero **SÍ la secuencia de acciones (el camino)** para el problema a resolver.
+
+
+Una analogía utilizada constantemente para explicar qué es un algoritmo es compararlo con la receta de un pastel. De hecho, la propia receta de la tarta ya es un algoritmo, es una secuencia de toma de decisiones que dará como resultado un producto final.
+
+```{r, out.width = "400px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/receitaBolo.png")
+```
+
+**Figura 1:** Receta tarta de zanahoria.
+
+Si cambia alguno de los pasos descritos en la receta, es posible que su tarta no salga como esperaba. Si olvida o ignora la información para añadir levadura, su tarta no subirá. Si sustituye las zanahorias por leche con chocolate, es posible que al final obtenga un pastel. Sin embargo, ya no será una tarta de zanahoria. 
+
+Aunque un tanto graciosos, estos ejemplos se aplican directamente a la elaboración de algoritmos para realizar tareas computacionales. Los programas de ordenador son básicamente algoritmos escritos en un lenguaje específico para la ejecución de una función o un grupo de funciones. 
+
+Para la creación de un programa, la persona encargada de esbozarlo debe pensar en dos pasos:
+
+1. **¿Qué hay que hacer?**
+
+> Es en esta fase cuando la lógica tiene la mayor contribución. En ese momento se define lo que debe hacerse, cuál es el objetivo final de este programa. Además, en ese momento se determina toda la planificación. Se estipulan las fases de ejecución y se prevén los resultados intermedios.
+
+2. **¿Cómo hacerlo?**
+
+> Es en esta fase cuando tiene lugar la programación. Es entonces cuando se decide qué lenguaje se va a utilizar y, con toda la planificación prevista, las herramientas específicas de cada lenguaje que se utilizarán para lograr el resultado.
+
+
+#### Ejemplo práctico
+
+Tienes el objetivo de calcular la nota media de un alumno en dos evaluaciones y clasificarlo como **aprobado** o **reprobado** en base a una nota media de al menos 7. ¿Cómo se debe aplicar la lógica de programación en este caso?
+
+**¿Qué hay que hacer?**
+
+Podemos organizar nuestro algoritmo de diferentes maneras. 
+
+Una de ellas es utilizar la forma narrativa: 
+
+> El objetivo de este algoritmo es obtener la nota media de un alumno a partir de las notas de dos evaluaciones. Primero identificaremos la nota de la primera evaluación. Después, se identificará la nota de la segunda evaluación. Después de estos pasos, se sumarán las dos notas y se dividirán por 2. Al final de este paso, se obtendrá la nota media. Si la nota es superior a 7, el alumno aprobará. En caso contrario, suspenderá. 
+
+
+
+Es decir, el algoritmo sería:
+
+1. identificar la primera del alumno
+
+2. Identificar la segunda nota del alumno
+
+3. Sumar las dos notas y dividir por 2
+
+4. Comprueba si la media es superior a 7
+
+5. Si la media es superior a 7, el alumno aprueba
+
+6. Si no, el alumno suspende
+
+\
+También podemos utilizar una forma de diagrama de flujo:
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/fluxograma.png")
+```
+
+\
+**Figura 2:** El diagrama de flujo es una buena representación gráfica simplificada del algoritmo utilizado.   
+\
+
+O incluso en forma de **pseudocódigo** (también conocido como lenguaje estructurado):
+
+*media de estudiantes*
+
+*Inicio
+
+*Introducir el primer grado del estudiante*
+
+*Guardar en nota1
+
+*Introducir la segunda nota del alumno
+
+*guardar en Nota2
+
+*média<-Nota1+Nota2/2*
+
+*Si Media>=7*
+
+*print "alumno aprobado "*
+
+*If not*
+
+*print "alumno suspenso "*
+
+\
+El **Pseudocódigo** es la forma más cercana de representación de un algoritmo en un lenguaje de programación. En el pseudocódigo no nos preocupamos por las funciones y/o comandos específicos del lenguaje. Sin embargo, especificamos los pasos a seguir de una forma más estructurada, que puede ser fácilmente aplicada en un lenguaje específico. 
+
+**Por ejemplo, utilizando R el algoritmo descrito anteriormente se representaría de la siguiente manera, en caso de que el alumno obtuviera 7 en el primer examen y 9 en el segundo**
+
+```{r}
+# Aquí establecemos los valores de las pruebas 1 y 2 respectivamente.
+Nota1<-7
+Nota2<-9
+
+# En este punto se calcula la media.
+Media<-(Nota1+Nota2)/2
+
+# En este punto, se ejecuta un análisis condicional que 
+# comparará la media con nuestro valor mínimo de aprobado e 
+# informará del resultado final (Apto o No apto)
+if(Media>=7){
+  print("El alumno ha aprobado")
+} else{
+  print("El alumno ha suspendido")
+  }    
+```
+
+
+*El primer recuadro representa el código utilizado en R para ejecutar el algoritmo. En el segundo código vemos la respuesta (el resultado) de la ejecución del algoritmo. Durante el curso volveremos a este ejemplo y se explicará cada paso. Así que, de momento, no te preocupes por entender qué significa cada comando. Intente comprender la lógica que hay detrás de los comandos basándose en los ejemplos de algoritmos explicados anteriormente. Hay varias formas de realizar la misma tarea en todos los lenguajes de programación. En R, no es diferente. Así que exploraremos un poco más las posibilidades de ejecutar esta misma tarea en las próximas lecciones.*
+
+
+Otra característica muy importante para crear algoritmos que sean funcionales y de uso universal, es decir, que sean ejecutables en cualquier situación y por cualquier persona que no haya participado en la creación del mismo, es una muy buena organización del código. La organización del código pasa por el uso de dos herramientas a lo largo de la escritura del código: **Comentarios e identificación**. Estas dos herramientas se trabajarán a lo largo de la ejecución de los algoritmos que utilizaremos a lo largo del curso. 
+
+Los comentarios no son más que información adicional que se deja en la forma estructurada del algoritmo para explicar qué se encarga de hacer cada trozo (*chunk*) de código. En R, para que el texto no sea interpretado como código a ejecutar, debe insertarse después del símbolo "#". Por ejemplo:
+
+```{r}
+#El siguiente comando calculará la media de dos números
+media<-5+7/2
+media
+```
+\
+Utilizar comentarios hace que tu código sea más comprensible para otras personas e incluso para ti. Cuando trabajamos con algoritmos largos, los comentarios nos ayudan a orientarnos y aumentan nuestra productividad.
+
+La identación es una característica que para muchos lenguajes de programación es esencial. En el caso de R, la identación no es tan crucial para que el código se ejecute. Es decir, incluso mal identificado, el código será funcional. Sin embargo, la identificación facilita enormemente la organización y comprensión del código. La identificación no es más que el uso de espacios y tabuladores para la correcta alineación de los códigos insertados en el algoritmo.
+
+**Por ejemplo, el código presentado anteriormente tendría este aspecto sin sangría**.
+
+```{r results='hide'}
+Nota1<-7
+Nota2<-9
+Media<-(Nota1+Nota2)/2
+
+if(Media>=7){
+print("El alumno ha aprobado")
+} else{
+print("El alumno suspende")
+}  
+```
+
+Puede notar que dentro de la función *if* es difícil identificar dónde empieza y termina cada comando.
+
+**Así, el código identificado puede ayudar en esta identificación**.
+
+```{r results='hide'}
+Nota1<-7
+Nota2<-9
+Media<-(Nota1+Nota2)/2
+
+if(Media>=7){
+  print("El alumno ha aprobado")
+} else{
+    print("El alumno suspende")
+  }    
+```
+
+Ese era un ejemplo sencillo y sutil. Sin embargo, trabajando con código largo y estructuras complejas de repetición y comprobación (como *if*, *for*, *while*), que se verán en el curso, la identificación puede ser muy útil.
+\
+
+**El aprendizaje de cualquier lenguaje de programación está directamente implicado con el uso frecuente y el entrenamiento. Aprender un lenguaje de programación puede compararse con aprender un nuevo idioma. Es necesario aprender pequeños fragmentos del lenguaje (palabras) para luego poder formar estructuras más complejas (frases). Sin embargo, aunque aprenda suficientes palabras para formar frases, necesita seguir algunas reglas para comunicarse de forma correcta y eficaz (gramática y ortografía). Además, una vez aprendido, hay que practicar la escritura y la expresión oral para mejorar y no olvidar los contenidos aprendidos. El lenguaje de programación es la forma en que el usuario se comunica con el ordenador y le transmite órdenes para la ejecución de actividades. Al igual que las palabras en un idioma, un lenguaje de programación tiene comandos específicos. La agrupación de comandos en estructuras más complejas formará los llamados algoritmos (o scripts, rutinas, etc.), Sin embargo, para que el algoritmo sea funcional, dependemos de nuestra versión de la gramática y la ortografía. Esto dependerá del uso específico de cada función, de la identificación y de las reglas sintácticas del lenguaje.**
+\
+
+#### **10 CONSEJOS PARA CREAR UN BUEN ALGORITMO** {style="text-align:center"}
+# {style="text-align:justify"}
+1. Organiza tus ideas antes de empezar a escribir código.
+
+2. Al principio, escribir la idea en un papel con un análisis paso a paso ayuda mucho.
+
+3. Intenta dividir el código en bloques de funciones. Esto puede ayudar tanto a organizar el código como a entenderlo después.
+
+4. Comenta todos los puntos cruciales de tus códigos.
+
+5. Intenta no utilizar nombres genéricos para las variables que crees. Por ejemplo, "a", "b", 
+"var1", etc.
+
+6. Evita también los nombres de variables muy largos.
+
+7. No utilices acentos, ni caracteres especiales en los nombres de tus variables (excepto "_" o "-").
+
+8. Si en algún momento tu código no funciona (*compila*) aunque todo te parezca correcto, mantén la calma y analiza cada función dentro de tu código con mucha calma. Muchas veces una mayúscula en lugar de una minúscula en el nombre de una variable puede hacer imposible toda una rutina. Hasta que te acostumbres a todo tipo de mensajes de error, un análisis exhaustivo del código puede ayudarte mucho.
+
+9. Trate su algoritmo como si fuera a ser utilizado para siempre. Lo que aprendiste construyendo una rutina en particular, puede ser usado en incontables otras. Por lo tanto, cuida mucho la organización e identificación de tu algoritmo.
+
+10. Guarde su algoritmo con un nombre que pueda ser fácilmente identificado en el futuro. De preferencia, cree una lista de sus algoritmos y funciones. De esta manera, incluso sin trabajar con él durante mucho tiempo, lo encontrará fácilmente.
+\
+\
+
+
+### **Conociendo R - Instalación y obtención de ayuda** {style="text-align:center"}
+# {style="text-align:justify"}
+R es una potente herramienta para el análisis estadístico. Al mismo tiempo, R es tanto el entorno (software) utilizado para ejecutar rutinas estadísticas como un lenguaje de programación. **¿Pero qué quiere decir?
+
+> R proporciona el entorno para ejecutar los scripts creados, así como para visualizar los resultados de los comandos y los gráficos generados. Este entorno está presente en la versión "clásica" obtenida mediante el proceso de instalación que veremos a continuación, o bien presente en alguna de las alternativas de interfaz gráfica. La más famosa de estas alternativas es R Studio.
+
+#### **Un poco sobre la historia de R**
+
+
+R fue creado en Nueva Zelanda (Auckland) en 1992. Fue el resultado de una colaboración iniciada por los investigadores Ross Ihaka y Robert Gentleman. El lenguaje de programación implementado en R se derivó de un lenguaje previamente existente, el lenguaje S. El nombre R se creó a partir de una broma entre la primera letra de los dos creadores, y el nombre del lenguaje utilizado para la creación (Lenguaje S). El lenguaje S y el lenguaje R presentan diferencias significativas entre sí. Sin embargo, una serie de códigos implementados en el lenguaje S están presentes de forma idéntica en el lenguaje R. El código fuente de R es libre. Es decir, cualquiera puede modificar y crear versiones del software, a partir de ciertos requisitos previos. Actualmente, el mantenimiento, actualización y gestión de R corre a cargo del *R Development Core Team*. 
+
+> R se publicó originalmente en 1995. Sin embargo, la versión beta estable no se publicó hasta el año 2000.
+
+\
+```{r, out.width = "350px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/paper_R.png")
+```
+
+**Figura 1:** Publicación original de R. La publicación original se publicó en 1995 en el Journal of Computational and Graphical Statistics. Disponível em: http://www.tandfonline.com/doi/abs/10.1080/10618600.1996.10474713
+
+
+#### **¿Por qué usar R?**
+
+En primer lugar, como R es de código abierto y muy popular, ha captado la atención de la comunidad científica a lo largo de los años. Esto ha creado una enorme comunidad que genera contenido para su uso en el software. Este contenido está disponible de varias formas, desde consejos para implementar funciones básicas, resolución de dudas, discusión de problemas, hasta la creación de **paquetes**. Existen miles de paquetes diferentes que se pueden instalar en R y que ejecutarán rutinas y comandos específicos para un tipo de análisis concreto. Estos paquetes son creados por la comunidad científica que utiliza R y están disponibles de forma gratuita. Exploraremos las capacidades de algunos paquetes a lo largo del curso y tendremos un momento sólo para la presentación de paquetes interesantes. Además de la gran versatilidad de funciones, R es capaz de generar una gran variedad de gráficos de gran calidad y potencia, lo que puede suponer un aumento considerable de la calidad de los resultados presentados en las publicaciones. 
+
+> Una característica muy importante y ventajosa de R, que al principio puede no resultar evidente, es su facilidad de uso y la reproducibilidad del código. Al principio, los programas de "apuntar y hacer clic" como SPSS pueden parecer más fáciles de usar. Sin embargo, ejecutar una rutina de análisis extensa puede ser mucho más complicado de revisar y reproducir por otros usuarios en ese sistema. En el caso de R, una vez adaptado al lenguaje de programación, se puede observar que su uso es bastante intuitivo. Además, una rutina extremadamente compleja puede organizarse en un script que puede ser ejecutado por una persona que no haya participado en su creación de forma muy sencilla, a diferencia del uso de una rutina *apuntar y hacer clic*. 
+
+
+#### **¿Dónde encontrar R?**
+
+Información sobre la historia, lanzamientos de nuevas versiones, actualizaciones, manuales, preguntas frecuentes, así como enlaces para descargar R están disponibles en:
+
+> https://www.r-project.org/
+
+##### *Descarga e instalación*
+
+Accediendo al enlace anterior, es posible identificar en la esquina superior izquierda la opción *Download* y un hipervínculo justo debajo con la escritura *CRAN* (Figura 2a, rectángulo rojo). *CRAN* es la abreviatura de Comprehensive R Archive Network. Se trata del sistema de servidores utilizado para almacenar información relacionada con R (software, paquetes, etc.). 
+
+Haciendo clic en *CRAN*, será dirigido a una página que enumera todos los servidores disponibles, separados por países (Figura 2b). 
+
+Es posible notar que para Brasil hay servidores asignados en los estados de Bahia, Paraná, Rio de Janeiro y São Paulo (Figura 2c). En este momento, es interesante seleccionar el servidor más cercano a usted. Puede realizar la Descarga desde cualquier servidor. Sin embargo, la selección de servidores cercanos reducirá los problemas de conexión. 
+
+Una vez seleccionado uno de los servidores, será dirigido a una nueva página, que contiene los enlaces a los ejecutables de R para diferentes sistemas operativos (SO). En este curso, nos centraremos en la instalación para **Windows** (en caso de que alguien quiera instalar R en otro SO, estaré disponible para preguntas). Haga clic en el enlace correspondiente a Windows (flecha roja en la Figura 2d). 
+
+En esta nueva página, verá algunas opciones de enlaces para descargar archivos relacionados con R. En este punto, debemos descargar el archivo binario base para instalar R. Haga clic en la opción "*instalar R por primera vez*" (Figura 2e).
+
+En la nueva página que se abre, haz clic en la opción "*Descargar R 3.4.1 para Windows*" (figura 2f). Se abrirá una nueva ventana para poder guardar el ejecutable en el ordenador.
+
+> Los servidores *CRAN* se denominan espejos. Por lo tanto, en cada proceso que R solicite seleccionar una réplica, estará solicitando la selección de uno de los servidores.
+
+
+\
+```{r, out.width = "500px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/instalation.jpg")
+```
+
+**Figura 2:** Paso a paso para descargar el archivo ejecutable para la instalación de R.
+\
+\
+
+Una vez descargado el ejecutable, haga clic sobre el archivo para iniciar la instalación. Se abrirá la ventana mostrada en la figura 3. Continúe pulsando siguiente hasta el final de las opciones para realizar la instalación siguiendo las recomendaciones por defecto del programa.
+
+
+\
+```{r, out.width = "500px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/setup.jpg")
+```
+
+**Figura 3:** Ventana de inicio del proceso de instalación de R.
+\
+\
+
+
+**IMPORTANTE** 
+
+> Tras finalizar la instalación del software, en caso de que su ordenador sea de 64 bits, aparecerán dos iconos en su escritorio. Estos iconos corresponden a dos versiones de R. Una de 64 bits (R x64) y otra de 32 bits (R i386). En el caso de ordenadores de 32 bits, sólo se instalará la versión de 32 bits. En caso de que su ordenador tenga instaladas ambas versiones, elija siempre ejecutar el icono de 64 bits. La versión de 64 bits le permitirá utilizar más memoria, aumentando así el rendimiento del software. Sin embargo, debemos mantener ambas versiones debido a que algunos paquetes sólo están disponibles para la versión de 32 bits.
+
+
+\
+```{r, out.width = "300px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/environment.jpg")
+```
+
+**Figura 4:** Iconos disponibles tras la instalación en un ordenador de 64 bits.
+\
+
+
+##### *Instalación de R Studio*
+
+R studio es una herramienta desarrollada para hacer la interfaz gráfica de usuario de R aún más fácil de usar. En nuestro curso, trabajaremos tanto con la versión clásica de la GUI de R como con R studio. Sin embargo, nos centraremos principalmente en el uso de R studio, ya que la organización, la facilidad de uso, así como el número de características es mucho mayor con esta herramienta. 
+
+Para instalar R Studio, acceda al siguiente enlace:
+
+> https://www.rstudio.com/
+
+
+La instalación de R studio es muy sencilla. En primer lugar, debe descargar el ejecutable desde el enlace descrito anteriormente (Figura 5a). A continuación, haga clic en siguiente hasta que se complete la instalación (figura 5b). Si su ordenador es de 64 bits y durante la instalación de R se instalaron ambas versiones, R Studio utilizará por defecto la versión de 64 bits.  
+
+\
+```{r, out.width = "400px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/Rstudio_install.png")
+```
+
+**Figura 5:** Iconos disponibles tras la instalación en un ordenador de 64 bits.
+\
+\
+
+**IMPORTANTE**
+
+> R Studio debe instalarse después de la instalación de R, ya que R studio depende de la presencia de R para poder finalizar el proceso de instalación. 
+\
+
+
+##### **Conociendo la interfaz clásica de R (R base)**
+
+
+La versión clásica de R se llama *R base*. Para iniciarla, haga doble clic en el icono creado en su escritorio (si tiene la versión de 64 bits, inicie, R x64). En ese momento, se abrirá la ventana que se muestra en la Figura 6. 
+
+\
+```{r, out.width = "400px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/Rgui.png")
+```
+
+**Figura 6:** Interfaz de trabajo RGraphic (RGui).
+\
+\
+
+Al ejecutar el software, sólo estará abierta la figura 6a. Esta ventana se llama **consola**. En ella podemos ejecutar comandos y ver todas las salidas (de origen no gráfico). 
+
+La figura 6b muestra una ventana muy interesante para utilizar mientras usamos R. Esta ventana se llama **script**. En esta ventana podemos escribir y editar nuestros algoritmos y funciones sin tener que rehacerlos cada vez que los ejecutamos. En el caso de ejecutar funciones en la consola, el comando utilizado da paso a su salida. Por lo tanto, es necesario volver a escribir el comando si queremos volver a ejecutarlo (existe una solución para los comandos más sencillos). Sin embargo, utilizando la ventana de script, puede enviar el comando a la consola y continuar con el comando tecleado en una ventana independiente. 
+
+En el caso de salidas gráficas (imágenes o gráficos), cuando se ejecuta un comando que creará una de estas salidas, se abre una nueva ventana (Figura 6c). Esta ventana se llama **R Gráficos**. Aquí podemos ver nuestras salidas gráficas así como exportarlas a nuestro ordenador.
+
+**NOTA:** Estas ventanas se verán con más detalle durante la lección. Hay muchas más funciones disponibles.
+
+##### **Conociendo la interfaz de R Studio**
+
+R Studio es una excelente alternativa a la interfaz gráfica clásica de R. En R studio, todas las ventanas están integradas en una única interfaz, como se muestra en la Figura 7. Además, hay una serie de características que facilitan la organización y la escritura de código. Por ejemplo, en R studio, todos los comandos tienen un tipo de color específico (azul para los comandos, verde para los comentarios, etc.). 
+
+La interfaz de R studio se divide en cuatro ventanas: 
+
+1- **Script:** En esta ventana se muestran todos los scripts creados. Los distintos scripts se organizan en pestañas y pueden analizarse simultáneamente. Al igual que en R Gui, los comandos del script pueden enviarse a la consola, donde se muestra la salida (Figura 7a).
+
+2- **Consola:** Como en R Gui, la consola es donde se muestra la salida (resultados de comandos o mensajes de error) (Figura 7b). 
+
+3- **Historia y Entorno:** La figura 7c muestra la ventana donde es posible observar dos pestañas: Enrionment e History. En Environment es posible identificar todos los objetos creados durante su comando en el R. Esto trae un gran dinamismo en los análisis, ya que en el R Gui, los objetos deben ser verificados manualmente. En Historia es posible identificar la historia de todos los comandos ejecutados en el análisis. De esta forma, si cambias algo en el script y necesitas volver a una versión anterior, identificarás en History el momento en que el comando fue ejecutado de forma correcta.
+
+4- **Opciones de visualización**: La figura 7d muestra una ventana de Rstudio que tiene algunas pestañas interesantes para la visualización de datos. La pestaña *Archivos* te permite ver las carpetas y archivos del sistema en tu ordenador. Esto facilita la identificación de archivos de interés. La pestaña *Plots* se encarga de presentar todas las salidas gráficas generadas por comandos en R. Allí puede navegar entre los distintos gráficos crear, exportar y modificar los gráficos generados. La pestaña *Paquetes* le permite ver los paquetes instalados, así como cargar e instalar nuevos paquetes. La pestaña *Ayuda* mostrará el resultado de los comandos de ayuda ejecutados en R. En esta pestaña puedes acceder a los manuales y explicaciones sobre paquetes y comandos. Por último, tenemos la pestaña *Visor* que de forma similar a la pestaña *Plots* también presenta características gráficas. Sin embargo, está activa en algunas situaciones específicas, como cuando se accede a recursos a través de urls de páginas web.
+
+
+\
+```{r, out.width = "400px", echo=FALSE}
+knitr::include_graphics("~/post_doc_Leon/Classes/summer_course_RNA_2023/Intro_R_bioconductor/Rstudio.png")
+```
+
+**Figura 7:** Interfaz gráfica de usuario de R studio.
+
+##### **¿Dónde obtener ayuda?**
+
+Este tema se añadió intencionadamente al principio del curso, aunque de forma contraintuitiva. Normalmente, la opción de dónde obtener ayuda se presenta después de la introducción a algún contenido. Sin embargo, en mi opinión, R tiene una peculiaridad extremadamente importante que hace que este tema pueda situarse al principio del curso sin ninguna incomodidad. 
+
+Esa peculiaridad es la **comunidad de usuarios de R**. R es utilizado por millones de personas en todo el mundo. Personas de diferentes ámbitos, con diferentes objetivos, pero que utilizan una herramienta común. Así, a lo largo de los años se han creado numerosas comunidades específicas para la presentación de preguntas, discusión de problemas y aprendizaje de R. Además, esta misma comunidad también se ha unido a las herramientas existentes para la discusión de preguntas recurrentes en otros lenguajes de programación.
+
+Así, existe una plétora de discusiones ya realizadas sobre dudas de ejecución de comandos, resolución de problemas con rutinas, uso de paquetes existentes, discusión de bugs, etc. Así, accediendo a algunas de las herramientas abajo, usted podrá obtener ayuda para la gran mayoría de sus problemas.
+
+Sin embargo, **la mayor sugerencia de todas**, por simple que parezca, es: **UTILIZA GOOGLE**. En la gran mayoría de los casos, simplemente copiando y pegando el mensaje de error reportado por R en el buscador de google aparecerán una serie de foros de discusión que te presentarán diferentes formas de resolver el problema. Además de los errores, si quisieras aprender a realizar una función, como crear una tabla. Una simple búsqueda de *cómo crear una tabla en R* devolverá igualmente una serie de foros que presentarán las diferentes maneras. 
+
+Los dos últimos consejos para potenciar tu capacidad de encontrar la solución a tus problemas en R son: Cuando hagas búsquedas en Google sobre un problema en R, intenta buscar el problema usando **inglés** y usando terminología específica de R. Por ejemplo, en el caso de cómo crear una tabla en R, busca *"How to create a data frame in R? "*. Hay muchos foros de discusión en inglés, pero el número de foros en inglés es infinitamente mayor. Con esto, tus posibilidades de encontrar la solución a tu duda se verán potenciadas. En el caso de la terminología, las tablas dentro de R se llaman *Data Frames*. Con esto, tu búsqueda será aún más específica. Con el tiempo, te irás adaptando cada vez más a la terminología y encontrarás la respuesta a tus preguntas cada vez más rápido.
+
+El aprendizaje automático y las herramientas de IA también son una gran oportunidad para aprender y optimizar tu código. El **ChatGTP**, por ejemplo, puede generar líneas completas de código para tus tareas. Sin embargo, es importante tener en cuenta que **para obtener una respuesta correcta, hay que saber preguntar**.
+
+
+##### *Enlaces a materiales de ayuda y estudio* {style="text-align:center"}
+# {style="text-align:justify"}
+
+**R-bloggers**
+
+> https://www.r-bloggers.com/
+
+R-bloggers se concibió originalmente como un blog para agregar contenidos sobre R. Hoy en día se pueden encontrar numerosos consejos sobre funciones básicas, paquetes específicos y resolución de problemas. Es una de las mayores comunidades de información sobre R.
+
+**Cookbook for R**
+
+> http://www.cookbook-r.com/
+
+The Cookbook for R es un sitio que agrupa los contenidos presentados en libros del mismo nombre. En él se pueden encontrar excelentes tutoriales y ejemplos para aprender el uso básico de R.
+
+**Try R**
+
+> http://tryr.codeschool.com/levels/1/challenges/2
+
+Try-R es una herramienta muy interesante que mezcla un libro de texto con un entorno de programación. En ella puedes encontrar información sobre contenidos específicos y descripciones que explican cómo funcionan los comandos, al mismo tiempo que ejecutas los códigos. 
+
+**R - Dummies**
+
+> http://www.dummies.com/programming/r/
+
+Dummies es una serie de libros destinados al aprendizaje básico de diversos contenidos. R es uno de los contenidos tratados en esta serie de libros. Además de los libros, existe un sitio creado para presentar contenidos enfocados al aprendizaje básico de los temas tratados. En el caso de R, se tratan varios conceptos básicos como la navegación en R Gui, la manipulación de datos de importación, etc. 
+
+**Stackoverflow**
+
+> https://stackoverflow.com/
+
+Stack overflow es una comunicación destinada a la discusión y resolución de problemas relacionados con la programación en general. Sin embargo, es posible encontrar infinidad de discusiones relacionadas con R para la solución y discusión de problemas y dudas. Es una herramienta muy útil que debería ser utilizada constantemente por aquellos que pretendan trabajar con R (o cualquier otro lenguaje de programación) en el día a día. Es importante tener en cuenta que el sitio tiene reglas específicas de uso y se debe evitar presentar preguntas del tipo *"hágalo por mí "*. Es decir, puedes hacer preguntas básicas, pero debes mostrar que no buscas a alguien que te haga el trabajo, sino discutir y aprender.
+
+**r4stats**
+
+> http://r4stats.com/
+
+Es un sitio orientado al aprendizaje de R. Cuenta con una serie de clases y ejemplos orientados a la enseñanza de funciones básicas. 
+
+**Quick-R**
+
+> http://www.statmethods.net/index.html
+
+Quick-R es también un sitio centrado en el aprendizaje de R. Presenta una serie de tutoriales, clases y ejemplos para aprender R de una forma muy organizada e intuitiva.
+
+**Git-Hub**
+
+> https://github.com/
+
+El Git-Hub es una comunidad en línea para la creación/desarrollo de software en varias plataformas. En ella puedes encontrar varios scripts desarrollados para realizar funciones específicas en R, hacer preguntas sobre temas más complejos y poner tu trabajo a disposición de la comunidad interesada.
+
+
+**R Graph Gallery**
+
+> http://www.r-graph-gallery.com/
+
+La R Graph Gallery es un sitio extremadamente interesante para cualquiera que esté interesado en aprender más sobre la creación de muchos tipos diferentes de gráficos en R. Proporciona explicaciones de muchos tipos diferentes de gráficos, así como ejemplos y tutoriales para crear gráficos en R. Volveremos a este sitio en el módulo sobre creación de gráficos en R.
+
+\
+
+
+**R Documentation**
+
+> https://www.rdocumentation.org/
+
+La Documentación de R es un motor de búsqueda de contenidos. En él, puedes buscar palabras clave que representen contenido relacionado con R en varias bases de datos (CRAN, Bioconductor, Github, etc.).
+
+**Redes sociais**
+
+Sí, la comunidad de usuarios de R también hace un uso constante de redes sociales como Twitter y Facebook para debates, presentación de contenidos y noticias. Intente encontrar grupos en Facebook, siga perfiles en Twitter. Twitter en concreto es una muy buena herramienta para recibir información y noticias sobre R. Hay varios perfiles asociados a la difusión de información, tutoriales, cursos y eventos relacionados con R. Utiliza también el *hashtag* #rstats para estar al tanto de las distintas discusiones que tienen lugar en el sitio. La comunidad R en Google también puede ser muy útil (https://plus.google.com/communities/117681470673972651781).
+
+
+# **Tipos de objetos, creación y manipulación** {style="text-align:center"}
+Se puede pensar en R como una gran y compleja calculadora, donde se pueden realizar diferentes cálculos y funciones. La diferencia básica pero fundamental de R es la forma en que se almacenan los resultados. R utiliza *programación orientada a objetos* (POO). Entre otras características, la POO utiliza un objeto que es capaz de almacenar información y reaccionar a los mensajes que se le envían, relacionarse y enviar mensajes a otros objetos. El uso de objetos es una de las grandes características de R y permite la aplicación de diversas acciones. 
+
+Los objetos son las unidades básicas que se utilizarán para construir funciones y rutinas más complejas. Los objetos pueden compararse con los ladrillos que construirán una pared, que en el futuro formarán una casa. Los ladrillos deben construirse siguiendo unas especificaciones y colocarse de forma lógica para construir el muro. Del mismo modo, los objetos en R deben construirse basándose en constituciones específicas, llamadas **clases**. Además, los objetos deben ordenarse y utilizarse de forma lógica dentro de los algoritmos. Al igual que en el caso de los ladrillos, que tienen distintos tipos para diversas funcionalidades, los objetos de R también tienen distintos tipos. A continuación, aprenderemos a crear y manipular objetos en R. Además, conoceremos los distintos tipos de objetos en R, así como las clases de variables que se insertan en los objetos.
+
+> A los objetos se les puede dar cualquier nombre. Sin embargo, es interesante seguir algunas pautas para facilitar la identificación del objeto y evitar problemas de manipulación a la hora de crear código. Los nombres de objetos no pueden contener espacios, por lo que si quieres diferenciar dos palabras, utiliza los símbolos "-" o "_". Además, evite utilizar nombres muy largos o muy cortos para describir objetos. No utilice caracteres especiales al nombrar objetos. La presencia de letras mayúsculas o minúsculas diferentes en el nombre de los objetos es suficiente para crear dos nombres distintos. Por ejemplo, el objeto *objeto1* no será el mismo objeto que *objeto1*. Los objetos son la unidad básica de todas las acciones que realizamos en R. Por lo tanto, debemos crearlos con mucho cuidado.
+
+###### *Creación de objetos en R*
+
+En R se puede insertar información en los objetos de dos maneras:
+
+1) Utilizando el símbolo "=
+
+```{r}
+objeto1=1
+```
+
+2) Utilizando el símbolo "<-".
+
+```{r}
+objeto2<-1
+```
+
+Ambas formas darán como resultado la creación de un objeto que contiene el mismo valor, en este caso el número 1. 
+
+```{r}
+objeto1
+```
+
+```{r}
+objeto2
+```
+
+Ambas formas de insertar información en un objeto R funcionan de la misma manera. Sin embargo, el uso del símbolo "<-" infiere una idea de dirección al insertar contenido. Por ejemplo
+
+```{r}
+objeto3<-1
+
+objeto4<-objeto3
+
+objeto4
+```
+
+En este caso, hemos creado *objeto3* donde hemos insertado el valor 1. Después de crear el objeto 3, el valor presente en él se ha insertado en *objeto4*. Utilizando el símbolo "<-" podemos demostrar que el valor del *objeto3* se ha insertado en el *objeto4* y no al revés. En el caso de utilizar el símbolo "=", esta idea de dirección no sería posible. Además, la cuestión de la dirección puede aplicarse directamente con el uso del símbolo "<-". Por ejemplo
+
+```{r}
+objeto1<-1
+
+objeto2<-2
+
+objeto1
+
+objeto2
+
+objeto1<-objeto2
+
+objeto1
+```
+
+En los comandos anteriores, hemos creado *objeto1* y *objeto2*. Después de crear ambos, el valor de *objeto2* se ha insertado en *objeto1*. Simplemente invirtiendo el orden del símbolo "<-" a "->", el valor de *object1* se insertará en *object2*. 
+
+```{r}
+objeto1<-1
+
+objeto2<-2
+
+objeto1
+
+objeto2
+
+objeto2->objeto1
+
+objeto2
+```
+
+**NOTA:** A pesar de esta posibilidad, es interesante estandarizar la posición del objeto que recibirá la información y el objeto o valor que "cederá" la información. Generalmente, el objeto a crear está a la izquierda del objeto que "cederá" la información.
+
+Además de asignar y transferir valores entre objetos, es posible realizar operaciones entre objetos. Creemos dos variables "númeroA" y "númeroB", con los valores 2 y 4, respectivamente. 
+
+```{r}
+númeroA<-2
+
+númeroB<-4
+
+númeroA
+
+númeroB
+```
+
+Utilizando los objetos creados, vamos a aplicar algunas operaciones básicas entre ellos.
+
+1) **Suma**
+
+```{r}
+resultadoSuma<-númeroA+númeroB
+
+resultadoSuma
+```
+El símbolo utilizado para informar de que se produce la operación de suma es "+".
+
+2) **Sustracción**
+
+```{r}
+resultadoSub<-númeroA-númeroB
+
+resultadoSub
+```
+El símbolo utilizado para informar de que se produce la operación de resta es "-".
+
+3) **Multiplicación**
+
+```{r}
+multipResultado<-númeroA*númeroB
+
+multipResultado
+```
+El símbolo utilizado para informar de que se produce la operación de multiplicación es "*".
+
+4) **División**
+
+```{r}
+resultadoDiv<-númeroA/númeroB
+
+resultadoDiv
+```
+El símbolo utilizado para indicar que se produce la operación de división es "/".
+
+
+######## *Inserción de múltiples valores en objetos en R*
+
+Los objetos en R tienen la funcionalidad de recibir múltiples valores y almacenarlos de diferentes maneras. A continuación, veremos cómo insertar múltiples valores en un objeto simple. A continuación, veremos cómo se comportan las operaciones entre objetos con múltiples valores. Por último, aprenderemos a recuperar valores en posiciones específicas de ese objeto. 
+
+Comprender cómo se manipulan los objetos y cómo reaccionan ante las operaciones es uno de los puntos principales para aprender R. La lógica relacionada con la manipulación de objetos simples puede extrapolarse a otros tipos de objetos. Por lo tanto, todos estos pasos serán muy importantes para el resto de actividades relacionadas con R. 
+
+La principal forma de insertar una combinación de números en un objeto en R es utilizando la función "c()". Esta función se llama *combinar* y tiene como objetivo combinar múltiples elementos en un objeto. 
+
+> El objeto que contiene múltiples elementos se denomina **VETOR**.
+
+```{r}
+
+vectorA<-c(1,2,3,4,5)
+
+vectorA
+
+```
+
+La salida mostrada arriba muestra el contenido actual del vector *vectorA*. En ella se puede ver que los valores introducidos en el vector están organizados de la misma forma que fueron introducidos.
+
+Además de números, se pueden introducir otros tipos de valores en las matrices, como nombres, letras o combinaciones alfanuméricas.
+
+```{r}
+
+vectorB<-c("Aroa", "Juanjo", "Pedro", "Pablo")
+
+vectorB
+
+```
+
+**NOTA:** La diferenciación entre caracteres y objetos en R se hace por la presencia de comillas dobles o simples ("" o '') antes y después del conjunto de caracteres. Por ejemplo, si en el ejemplo anterior se introdujera la palabra "Pablo" sin las comillas, R intentaría encontrar un objeto llamado Pablo, y se informaría de un mensaje de error, porque no se ha creado ningún objeto con el nombre Pablo
+
+
+```{r}
+
+vectorB<-c("Aroa", "Juanjo", "Pedro", Pablo)
+
+```
+
+En el futuro discutiremos la posibilidad de incluir múltiples objetos o vectores en otro vector utilizando el comando "c()".
+
+*Operaciones básicas con vectores*
+
+Las operaciones con vectores en R utilizan los mismos caracteres para realizarlas. Sin embargo, lo que difiere es la forma en que se genera la salida. Crearemos dos vectores *vectorA* y *vectorB*, rellenos con c(1,2,3,4,5) y c(10,20,30,40,50), respectivamente, para ejemplificar el comportamiento de las operaciones que involucran vectores.
+
+```{r}
+vectorA<-c(1,2,3,4,5)
+
+vetorB<-c(10,20,30,40,50)
+
+vectorA
+
+vectorB
+
+```
+
+Inicialmente utilizaremos sólo *vectorA* y todas las operaciones se realizarán utilizando el valor 10.
+
+1) **Suma**
+
+```{r}
+resultadoSuma<vectorA+10
+
+resultadoSuma
+```
+
+2) **Sustracción**
+
+```{r}
+resultadoSub<-vectorA-10
+
+resultadoSub
+```
+
+3) **Multiplicación**
+
+```{r}
+resultadoMult<-vectorA*10
+
+resultadoMult
+```
+
+4) **División**
+
+```{r}
+resultadoDiv<-vectorA/10
+
+resultadoDiv
+```
+
+Observe que todos los elementos del *vectorA* han sido modificados por el resultado de la operación correspondiente utilizando el número 10 y almacenados en la salida respectiva. Es decir, una operación realizada sobre un vector se aplicará a todos los elementos, si no se especifica qué elemento utilizar.
+
+A continuación veremos cómo se comporta el resultado de operaciones entre dos vectores.
+
+1) **Suma**
+
+```{r}
+resultadoSuma<vectorA+vectorB
+
+resultadoSuma
+```
+
+2) **Sustracción**
+
+```{r}
+resultadoSub<vectorA-vectorB
+
+resultadoSub
+```
+
+3) **Multiplicación**
+
+```{r}
+resultMult<-vectorA*vectorB
+
+resultMult
+```
+
+4) **División**
+
+```{r}
+resultadoDiv<vectorA/vectorB
+
+resultadoDiv
+```
+
+Todos los resultados anteriores muestran el mismo patrón. Observa que el resultado de la operación aplicada a cada vector es el resultado de la interacción entre el primer elemento de *vectorA* con el primer elemento de *vectorB*, el segundo elemento de *vectorA* con el segundo elemento de *vectorB* y así sucesivamente hasta terminar con los vectores.
+
+Esta es una característica importante, ya que los vectores de diferentes tamaños, cuando participan en procesos interactivos (como las operaciones descritas anteriormente), siguen un patrón similar. 
+
+```{r}
+vectorC<-c(1,2,3)
+
+vectorD<-c(10,20)
+
+resultado<-vectorC+vectorD
+
+resultado
+```
+
+En el ejemplo anterior, se puede ver que el primer elemento de *vectorC* se añade al primer elemento de *vectorD* y el segundo elemento de *vectorC* se añade al segundo elemento de *vectorD*. Sin embargo, *vectorC* tiene tres elementos, por lo que este tercer elemento se añade al primer elemento de *vectorC*. Es muy importante comprender este patrón de interacción entre vectores. Trabajaremos este concepto varias veces a lo largo del curso.
+
+*Otras formas de crear vectores*
+
+A continuación se listan algunas formas de crear objetos en R. Es interesante notar que en R, hay varias formas de hacer lo mismo. Así que si encuentras alternativas a los comandos de abajo y obtienes el mismo resultado, no estarás necesariamente equivocado. 
+
+1) Integrar varios vectores en un nuevo vector
+
+Este proceso se puede hacer de forma sencilla utilizando el comando "c()", usando como argumentos (la información dentro de los paréntesis) los otros vectores.
+
+```{r}
+vectorA<-c(1,2,3)
+  
+vectorB<-c(5,6,7)
+  
+vectorC<-c(2,2,2)  
+
+combVector<-c(vectorA, vectorB, vectorC)  
+
+combVector
+```
+
+
+2) Creación de secuencias numéricas
+
+R dispone de algunas funciones básicas para crear secuencias y conjuntos de caracteres repetidos que pueden ser muy útiles a la hora de crear rutinas.
+
+2.a) Creación de secuencias numéricas
+
+La función "seq()" se utiliza para crear secuencias numéricas siguiendo diferentes patrones dados. Entre paréntesis, los argumentos necesarios para la función son: *desde=*, *hasta=* y *por=*. Así, para crear una secuencia numérica que comience del 1 al 10, incrementando los valores de 1 en 1, el código de referencia sería el siguiente
+
+```{r}
+seqA<-seq(from=1,to=10,by=1)
+
+seqA
+```
+Observe que los argumentos dentro de la función "seq()" están separados por comas. Esta es una característica muy importante que debería mantenerse y utilizarse en todas las funciones en R. Además, otra característica interesante es el hecho de que los nombres de los argumentos pueden omitirse, siempre y cuando se respete el orden preestablecido en el manual de la función. Por ejemplo, el siguiente comando dará como resultado la misma salida que el anterior.
+
+```{r}
+seqA<-seq(1,10,1)
+
+seqA
+```
+
+Sin embargo, si cambiamos las posiciones entre el primer y el segundo argumento de la función, aparecerá un mensaje de error. Ya que no es posible crear una secuencia numérica que comience con un número mayor que el número final. Esto es posible si decrementamos el número en lugar de incrementarlo. A continuación le mostraremos cómo hacerlo.
+
+```{r}
+seqA<-seq(10,1,-1)
+
+seqA
+```
+
+El mensaje de error "Error in seq.default(10, 1, 1): wrong sign in 'by' argument" muestra exactamente el hecho de que necesitaríamos decrementar el número para hacer posible la creación de la secuencia. Sin embargo, si nombramos los argumentos, el orden en que se presentan en la función no supone ninguna diferencia (la mayoría de las veces).
+
+```{r}
+seqA<-seq(to=10,by=1,from=1)
+
+seqA
+```
+
+En este punto, veremos cómo crear secuencias decrecientes aplicando el proceso de decremento. Por ejemplo, vamos a crear una secuencia que empiece en 20 y baje hasta -20, decrementada en 2.
+
+```{r}
+seqB<-seq(from=20,to=-20,by=-2)
+
+seqB
+```
+
+Otra forma muy sencilla de crear una secuencia de números en R es utilizar el carácter ":" entre dos números. Por ejemplo, vamos a crear una secuencia de 5 a 10 utilizando esta estrategia. 
+
+```{r}
+seqC<-5:10
+
+seqC
+```
+
+Sin embargo, es importante tener en cuenta que con esta estrategia, los números sólo se pueden incrementar o decrementar de 1 en 1. 
+
+2.b) Creación de secuencias de caracteres alfabéticos
+
+Además de secuencias numéricas, es posible crear secuencias con caracteres alfabéticos utilizando las funciones "letters()" y "LETTERS()". La diferencia entre ambas funciones radica en su salida. La función "letters()" creará una secuencia de caracteres en minúsculas, mientras que la función "LETTERS()" creará una secuencia de caracteres en mayúsculas (de forma muy intuitiva). Estas funciones trabajan a partir de los *índices* (posiciones) de los caracteres en la secuencia alfabética. Por ejemplo, creemos una secuencia de letras de la "a" a la "h".
+
+```{r}
+vector_letras<-letters[1:8]
+
+vector_letras
+```
+
+```{r}
+vector_letters<-LETTERS[1:8]
+
+vector_letters
+```
+
+Como verás, no utilizamos "()" para determinar los argumentos de letras y CARTAS. Esto se debe a que estas dos estructuras no son en realidad funciones, sino vectores. En este caso, estamos utilizando una forma de recuperar subconjuntos de elementos asignados en vectores preexistentes en R. Más adelante trataremos en profundidad las distintas formas de extraer subconjuntos de elementos de distintos tipos de elementos en R.
+
+2.c) Creación de secuencias de números o caracteres repetidos
+
+La función "rep()" puede utilizarse para crear un vector con un número predeterminado de repeticiones de un elemento dado. Por ejemplo, creemos tres vectores. El primero contiene el número 9 repetido 13 veces, el segundo contiene la letra "X" repetida 13 veces y el tercero contiene el número 2 repetido 13 veces. Los argumentos obligatorios que hay que dar a la función "rep()" son "x" y "veces".
+
+```{r}
+repA<- rep(x=9, times=13)
+
+repA
+```
+
+```{r}
+repB<- rep(x="X", times=13)
+
+repB
+```
+
+```{r}
+repC<- rep(x=2, times=13)
+
+repC
+```
+
+Además, podemos combinar diferentes funciones en R. Por ejemplo, la función "c()" se puede combinar con la función "rep()" para generar un vector que contenga los resultados de los tres vectores generados anteriormente. 
+
+```{r}
+combRep<-c(rep(x=9, times=13),rep(x="X", times=13),rep(x=2, times=13))
+
+combRep
+```
+
+2.d) Criando vetores de números aleatorios
+
+Existen duas funções muito used for a criação de sequências (ou sorteio de apenas um número) de números aleatórios no R. Essas função são: "runif()" e "sample()".
+
+Una función "runif()" possui três argumentos obrigatórios: *n*, *min* y *max*. Esses argumentos representam o número de elementos a serem gerados, o valor mínimo possível de ser sorteado y o valor máximo possível, respectivamente.
+
+É interesante ressaltar que a função "runif()" puede seleccionar de manera aleatória qualquer número contido no conjunto dos números racionais. Ou seja, quaquer número inteiro ou fracionário, positivo ou negativo, contido no intervalo informado.
+
+Um detalhe importante, é que caso vocês executem a função exatamente como apresentada abaixo em seus computadores, muito provavelmente vocês obterão resultados distintos, uma vez que a seleção dos números é aleatória (até mesmo se vocês executarem o mesmo comando diversas veces, os resultados serão distintos). Vamos a seleccionar 5 números aleatorios sin intervalo contido entre 2 y 10.
+
+```{r}
+randonA<-runif(n=5, min=2, max=10)
+
+randonA
+```
+
+Caso que tenga interés en obtener o mesmo resultado que o presentado en algún código que utilice una función "runif()", devemos utilizar una función denominada "set.seed()". Essa função cria uma "semente" (um valor) que será utilizado por algoritmo criador de números aleatorios presentes no R para iniciar o procesar. Dessa forma, o resultado final será o mesmo. O argumento informado para una función "set.seed" é qualquer número. Contudo esse número deve ser guardado para que futuramente o mesmo resultado seja obtenido. Por ejemplo, ejecute el comando acima da mesma forma que está presentado y observe el resultado. Note que os números são distintos entre os obtidos por você y os apresentados nesse material. Contudo, se vocês executarem o command abaixo, e notarem o resultado, verão que o resultado will be o mesmo.
+
+```{r}
+set.seed(1234)
+
+randonA<-runif(n=5, min=2, max=10)
+
+randonA
+```
+
+Una función "sample()" funciona de manera similar a la función "runif()". Porém, ela permite una selección de números internos, algo. Os argumentos obrigatórios a serem informados à função "sample()" são: *x* e *size*. Esses argumentos corresponden a intervalo de números em que a função selecionará os valores e o número de valores seleccionados, respectivamente.
+
+Vamos a seleccionar 3 valores entre los números 1 y 5 usando la función "sample()".
+
+```{r}
+sampleA<-sample(x=1:5,size=3)
+
+sampleA
+```
+
+Note que informando algunos esses argumentos, o número de elementos a serem selecionados não pode ser mayor do que o intervalo informado. Por ejemplo, não seria possível sortear 5 números entre los números 1 y 3.
+
+```{r}
+sampleA<-sample(x=1:3,size=5)
+
+```
+
+Esto se debe a una característica presente en varias funciones de R. Para varias funciones, hay argumentos que son obligatoriamente necesarios para ser informados, como en el caso de *x* y *size* para "sample()". Sin embargo, la función puede tener otros argumentos que no necesitan ser informados o que recibirán valores por defecto (*default*) predefinidos.
+
+El mensaje de error que mostraba el comando anterior era: "Error en sample.int(longitud(x), tamaño, reemplazar, prob): no se puede muestrear más que la población cuando 'reemplazar = FALSO'".
+
+Tenga en cuenta que el mensaje informa que no es posible realizar este tipo de muestreo cuando el argumento *replace=* es igual a FALSO. Sin embargo, no pasamos ningún argumento *replace=* en nuestros comandos. Esto se debe a que el argumento *replace=*, cuando no se informa, recibe un valor predeterminado predeterminado, en este caso, es un valor condicional (FALSO). Este argumento hace "una pregunta" al algoritmo sobre la necesidad o no de repetir números en la selección. Dado que la respuesta predeterminada es FALSO, no se pueden seleccionar números repetidos en el comando. Sin embargo, si cambiamos el valor de *replace=* a TRUE el resultado será el siguiente.
+
+
+```{r}
+sampleA<-sample(x=1:3,size=5, replace=TRUE)
+
+sampleA
+```
+
+**CONSEJO:** Los valores condicionales de verdadero o falso en R se pueden ingresar de dos maneras: VERDADERO o T para verdadero y FALSO o F para falso.
+
+Para la gran mayoría de funciones presentes en R y en paquetes adicionales, existen una serie de argumentos opcionales o que se usan por defecto en tiempo de ejecución. Para estar al tanto de todos los argumentos y de cómo funciona una función de R, debemos acceder a su manual.
+
+En R, para acceder al manual de una función debemos posicionar el carácter "?" antes del nombre de la función. Por ejemplo, para tener acceso al manual de funciones "sample()", debemos ejecutar el siguiente comando: **?sample()**.
+
+Finalmente, es importante señalar que existen varias alternativas a los comandos anteriores. Por lo tanto, la práctica y la búsqueda de otras formas de realizar la misma tarea es muy importante para mejorar nuestro conocimiento sobre las formas de usar R.
+
+######## **Crear, identificar y manipular diferentes tipos de objetos**
+
+Además de los vectores, existen otras clases de variables que son muy importantes en R. En esta parte del curso, presentaremos conceptos sobre estos otros tipos de variables y demostraremos cómo crearlas. En resumen, discutiremos cómo identificar y manipular estas nuevas clases de variables, así como las descritas anteriormente.
+
+En los últimos temas, se presentaron algunas formas de crear vectores. Sin embargo, por varios momentos esperamos el resultado de algún comando que ejecutamos en R para crear un vector. Podemos confirmar si la variable creada es un vector a través de diferentes comandos.
+
+Primero, solo podemos pedirle a R que muestre el contenido de la variable en la consola. Con un poco de práctica, solo evaluando la forma de la variable es posible identificar el tipo. Sin embargo, en caso de que tu variable sea muy grande, podemos usar dos comandos muy interesantes que ayudan en la inspección de variables muy largas. Estos comandos son "head()" y "tail()". Estos comandos mostrarán los primeros y últimos seis elementos de la matriz, respectivamente. Por ejemplo, creemos una matriz que contenga una secuencia del 1 al 100.
+
+
+```{r}
+#Creando el vector del 1 al 100 usando la función seq()
+vetorExemp<-seq(from=1,to=100,by=1)
+
+#Mostrando el resultado del vector en la consola
+vetorExemp
+
+#Uso de la función head() para mostrar los primeros seis elementos
+head(vetorExemp)
+
+#Uso de la función tail() para mostrar los últimos seis elementos
+tail(vetorExemp)
+
+```
+
+Con esto pudimos identificar que la variable *vectorExemp* es un vector que contiene elementos del 1 al 100. Sin embargo, otra información puede ser útil para ser extraída y/o confirmada de las variables que creamos. Uno de ellos, por ejemplo, es la clase de elementos insertados en variables. R tiene al menos 4 clases de elementos muy importantes: *numérico*, *carácter*, *lógico* y *factor*. Saber distinguir cada una de estas clases es una tarea de gran importancia, ya que existen funciones en R que aceptarán solo una de estas clases o que se comportarán de forma diferente a la esperada si se utiliza un tipo de clase.
+
+Los objetos que tienen elementos de clase *numéricos* son aquellos que solo tienen números.
+
+Los objetos que tienen elementos de clase *carácter* son aquellos que solo tienen caracteres en el objeto. Estos objetos pueden estar compuestos únicamente por caracteres o combinaciones de números y caracteres. Sin embargo, en el segundo caso, los números también serán tratados como caracteres en el objeto.
+
+Los objetos que tienen elementos de clase *lógica* son aquellos que solo tienen elementos que representan resultados lógicos (VERDADERO/T o FALSO/F).
+
+Los objetos que tienen elementos de clase *factor* se componen de números o caracteres. Sin embargo, lo que diferencia a estos elementos es el hecho de que tendrán una característica nominal. Es decir, tendrán la función de separar los datos en grupos.
+
+Para verificar la clase de variables contenidas en un objeto, podemos usar algunas funciones nativas de R. Una de estas funciones es la función "str()". La función "str()" presenta como salida la estructura de la variable utilizada como argumento de la función. Lo utilizaremos para comprobar todas las variables creadas en este curso dada su practicidad y diversidad de detalles de salida. Otra posibilidad es utilizar la función lógica correspondiente a cada elemento. R tiene una serie de funciones lógicas para probar las características de varias variables y elementos. Básicamente, cada función lógica comienza con el prefijo "es". seguido del tipo de prueba a realizar. Por ejemplo, si queremos probar si una variable tiene elementos numéricos, debemos usar la función "is.numeric()". A continuación, se presentarán algunos ejemplos de creación de vectores con estas diferentes clases de elementos, así como el uso de funciones para probar qué clase se insertó en el vector.
+
+*Vectores numéricos*
+```{r}
+# Creando un vector lleno solo con valores numéricos
+vetorNum <- c(1,2,5.3,6,-2,4) 
+
+# Evaluando la estructura del vector por la función str()
+str(vetorNum)
+
+# Realizando la prueba lógica con respecto a los elementos insertados en el vector
+is.numeric(vetorNum)
+```
+Tenga en cuenta que la función "str()" devolvió el siguiente resultado "num [1:6] 1 2 5.3 6 -2 4". La palabra "*num*" en el resultado indica que la matriz contiene elementos numéricos. los valores presentes dentro de los corchetes indican que hay 6 elementos en el vector (en las posiciones 1 a 6). Luego se muestran los números insertados en el vector. La función "is.numeric()" devolvió el valor lógico *VERDADERO*. Indicando que el vector contiene solo elementos numéricos.
+
+```{r}
+
+#Creación de un vector que contiene solo caracteres
+vetorChracA <- c("one","two","three") 
+
+# Evaluando la estructura del vector por la función str()
+str(vetorChracA)
+
+# Realizando la prueba lógica con respecto a los elementos insertados en el vector
+is.character(vetorChracA)
+
+#Creación de un vector que contiene caracteres y números
+vetorChracB<- c("one",2,"three") 
+
+# Evaluando la estructura del vector por la función str()
+str(vetorChracB)
+
+# Realizando la prueba lógica con respecto a los elementos insertados en el vector
+is.character(vetorChracB)
+
+# Creación de un vector que contiene caracteres numéricos
+vetorChracC<- c("1","2","3")
+
+# Evaluando la estructura del vector por la función str()
+str(vetorChracC)
+
+# Realizando la prueba lógica con respecto a los elementos insertados en el vector
+is.character(vetorChracC)
+```
+Los códigos anteriores presentaron algunas opciones para crear vectores que contienen elementos de la clase *carácter*. Es importante señalar que la presencia de la palabra "*chr*" en la salida de la función "str()" es lo que clasifica al vector con elementos de esa clase. En la creación de los vectores *vectorCharacB* y *vectorCharacC* cabe destacar algunos hechos interesantes. Por ejemplo, *vectorCharacB* tiene un valor numérico (2). Sin embargo, si observamos la salida de las funciones "str()" y "is.character()", este valor se consideró un carácter. El vector *vectorCharacC* demuestra que los números también pueden ser considerados caracteres por R. Sin embargo, si queremos crear un vector con una secuencia numérica, también queremos que esta secuencia sea considerada como caracteres, podemos hacerlo simplemente insertando cada número entre comillas Una alternativa a este proceso es el uso de la función "as.character()". Esta función convertirá valores numéricos a caracteres. También existe la función "as.numeric()". Es posible convertir el resultado de ambos usando la otra función. Por ejemplo:
+```{r}
+#Creación de un vector que contiene caracteres numéricos
+vetorChracC<- c(1,2,3)
+
+# Evaluando la estructura del vector por la función str()
+str(vetorChracC)
+
+# Conversión de vector numérico a carácter
+vetorChracC<-as.character(vetorChracC)
+
+str(vetorChracC)
+
+# Convirtiendo la matriz de caracteres a numéricos
+vetorChracC<-as.numeric(vetorChracC)
+
+str(vetorChracC)
+```
+Tenga en cuenta que inicialmente *vectorCharacC* se creó como numérico. Luego, se convirtió con éxito a la clase *personaje* mediante la función "as.character()". En un tercer momento, el vector de caracteres se volvió a convertir a numérico mediante la función "as.numeric()". Realice un seguimiento de los cambios de clase a través de la salida de la función "str()".
+
+
+*Vectores lógicos*
+```{r}
+#Creando el vector lógico
+vetorLogical <- c(TRUE,TRUE,TRUE,FALSE,TRUE) 
+
+# Verificando su estructura a través de la función str()
+str(vetorLogical)
+
+# Realizando la prueba lógica con respecto a los elementos insertados en el vector
+is.logical(vetorLogical)
+
+```
+Tenga en cuenta que la presencia de la palabra "*logi*" en la salida de la función "*str()*" es lo que clasifica la matriz como elementos lógicos.
+
+*Vectores que contienen factores*
+
+Los arreglos que contienen elementos de la clase *factor* tienen características específicas que pueden ser muy útiles para varias funciones en R. Por ejemplo, separar datos en grupos al calcular un promedio. Para crear este tipo de clase debemos usar las funciones "factor()" o "as.factor()". A continuación se muestran algunos ejemplos:
+
+```{r}
+
+#Creando el vector de factores usando las clases hombre y mujer
+vetorfactorA <- factor(c(rep("homem",3),rep("mulher",3))) 
+
+# Verificando su estructura a través de la función str()
+str(vetorfactorA)
+
+vetorfactorA
+
+#Creando el vector de factores usando las clases 1 y 2
+vetorfactorB <- factor(c(rep(1,3),rep(2,3))) 
+
+# Verificando su estructura a través de la función str()
+str(vetorfactorB)
+
+vetorfactorB
+
+```
+
+Tenga en cuenta que en ambos casos la salida de la función "str()" indica que el vector contiene elementos de la clase *factor*. Sin embargo, se presenta alguna información nueva: "Factor con 2 niveles "hombre","mujer": 1 1 1 2 2 2". La oración "Factor con 2 niveles "hombre","mujer"" indica que el vector está formado por factores que contienen dos niveles, "hombre" y "mujer". Sin embargo, los elementos contenidos en el vector se presentan como 1 y 2, con 1 refiriéndose a "hombre" y 2 refiriéndose a mujer, esto para *vectorfactorA*. En el caso de *vectorfactorB* los niveles son 1 y 2. Este tipo de datos es muy útil para clasificar a los individuos en grupos, por ejemplo, masculino y femenino, caso y control, etc.
+
+########## *Manipular y extraer información de objetos*
+
+La manipulación de objetos en R es uno de los temas más importantes durante el aprendizaje básico. Saber identificar la posición de los elementos dentro de un objeto, extraer estos elementos para asignarlos a otros objetos o usarlos como entrada para otras funciones es una tarea extremadamente rutinaria. En este punto trabajaremos con la manipulación de elementos en vectores y luego aplicaremos estos conceptos a otro tipo de variables en R.
+
+Como ejemplo, creemos un vector que contiene 6 elementos compuestos por los números 1, 2 y 3 por duplicado.
+
+```{r}
+vectorExemp<-c(1,2,3,1,2,3)
+
+vectorExemp
+
+```
+
+La identificación de elementos en arreglos (así como en otro tipo de variables en R) se realiza mediante corchetes *[]*. Los corchetes se utilizan para informar los índices (posiciones) de los elementos dentro del vector. Por ejemplo, extraigamos los elementos en las posiciones 2 y 4 del *Exempvector*, y solicitemos que se informen los elementos correspondientes en la consola.
+
+```{r}
+vectorExemp[c(2,4)]
+
+```
+Tenga en cuenta que los elementos 2 y 1 se muestran en la consola. Lo mismo se puede hacer para obtener elementos en cualquier otra posición.
+
+Ahora, extraigamos estos elementos e insertémoslos en un nuevo vector.
+
+```{r}
+nuevoVectorExemp<-vectorExemp[c(2,4)]
+
+nuevoVectorExemp
+```
+Con este comando, los elementos 2 y 1 se insertaron en el vector *newVetorExemp*.
+
+En determinados momentos nos puede interesar ejecutar el proceso contrario. Es decir, identificar las posiciones dentro de un vector que corresponden a un valor dado. Este proceso se puede realizar de forma muy sencilla, utilizando el operador "==".
+
+**IMPORTANTE:** Debemos usar el operador "==" porque el operador "=" se usa para crear objetos.
+
+```{r}
+vectorExemp==2
+```
+Tenga en cuenta que el comando anterior devuelve una serie de elementos lógicos que informan si el elemento en la posición dada es igual a 2 (VERDADERO) o no (FALSO). Para determinar la posición de estos elementos podemos utilizar, entre otras posibilidades, la función "cuál()".
+
+```{r}
+which(vectorExento==2)
+```
+Tenga en cuenta ahora que la salida de esta función devuelve las posiciones de los elementos iguales a 2 en el vector *vectorExemp*.
+
+Combinando los comandos anteriores, podemos realizar una tarea que puede ser de gran ayuda para construir rutinas complejas y análisis de datos en R, que es extraer subconjuntos de datos de un vector que corresponden a un valor.
+
+Por ejemplo, usando *vectorExemp* y los comandos descritos anteriormente, creemos un vector que contenga solo 2 valores.
+
+Una forma de ejecutar este comando sería:
+
+```{r}
+vectorExemp[vectorExemp==2]
+```
+De esta forma, R interpretará el resultado de la comparación lógica realizada por el comando "vectorExemp==2" de tal forma que los índices donde el resultado sea igual a TRUE se utilizarán para determinar los elementos a mostrar en la consola. .
+
+Este mismo procedimiento se puede realizar de diferentes maneras. Algunas formas se mostrarán a continuación.
+
+Podemos usar el comando "cuál()" para informar directamente las posiciones a extraer:
+```{r}
+vectorExemp[which(vectorExemp==2)]
+```
+
+Podemos almacenar las posiciones dentro de un vector y usarlo para buscar los índices correspondientes:
+```{r}
+vectorPos<-which(vectorExemp==2)
+
+vectorPos
+
+vectorExemp[vectorPos]
+```
+Tenga en cuenta que el resultado de *vectorPos* presenta las posiciones dentro del vectorExemp que tienen elementos iguales a 2.
+
+Tenga en cuenta que todos los comandos tuvieron los mismos resultados. Cada una de estas formas tendrá sus ventajas y desventajas al momento del análisis. Depende de nosotros definir la mejor estrategia de aplicación al crear nuestros algoritmos. Sin embargo, es importante saber que existen diferentes formas de realizar la indexación (identificación de la posición de los elementos) de elementos en R.
+
+Otra aplicación muy importante del proceso de indexación es el reemplazo y eliminación de elementos en una matriz. Usando la misma lógica, podemos identificar las posiciones de todos los elementos de un vector que son iguales a cierto patrón y reemplazarlos con otro elemento. Por ejemplo, usando *vectorExemp*, identifiquemos todos los elementos iguales a 2 y reemplácelos con NA.
+
+**CONSEJO:** La NA es una palabra que tiene su propio significado en R. La NA es responsable de representar *datos faltantes*. Es decir, valores que no fueron reportados ni recolectados. Otra palabra con significado propio es NaN, que corresponde al resultado de operaciones imposibles, como la división por cero. En el módulo en el que hablaremos de las bases de datos, trabajaremos un poco más en el concepto de *datos faltantes* y cómo sortear los posibles problemas causados por su presencia.
+
+```{r}
+# Mostrar los valores de la matriz vectorExemp en la consola
+vectorExemp
+
+# Reemplazando todos los valores iguales a 2 con NA
+vectorExemp[vectorExemp==2]<-NA
+
+# Presentamos los nuevos valores del vector vectorExemp
+vectorExemp
+
+```
+
+```{r include=F}
+vectorExemp<-c(1,2,3,1,2,3)
+```
+Tenga en cuenta que todos los valores iguales a 2 han sido reemplazados por NA. Esta misma lógica se puede aplicar para reemplazar cualquier valor dentro del elemento.
+
+Hay un operador muy útil para aplicar en la búsqueda de patrones en vectores. Este operador es "|". En el lenguaje de programación R, el "|" significa "o". De esta forma, podemos buscar más de un patrón para ser reemplazado. Por ejemplo, reemplacemos todos los elementos iguales a 2 o 3 con 1.
+
+```{r}
+# Visualización de los valores del vector vectorExemp en la consola
+vectorExemp
+
+# Reemplazando todos los valores iguales a 2 y 3 por 1
+vectorExemp[vectorExemp==2 | vectorExemp==3]<-1
+
+# Presentamos los nuevos valores del vector vectorExemp
+vectorExemp
+
+```
+Tenga en cuenta que los dos patrones se combinaron para que todos los elementos iguales a 2 o 3 fueran reemplazados.
+
+```{r include=F}
+vectorExemp<-c(1,2,3,1,2,3)
+```
+
+A través de la indexación de elementos, también podemos insertar y eliminar elementos en matrices. Por ejemplo, la matriz *vectorExemp* tiene seis elementos. Usando la indexación podemos insertar un séptimo elemento en el vector. Insertemos el número 10 como el séptimo elemento del vector.
+
+```{r}
+# Creando el vector que contiene seis elementos como antes
+vectorExemp<-c(1,2,3,1,2,3)
+
+# Introduciendo los elementos presentes en el vector
+vectorExemp
+
+# Insertando el séptimo elemento (10) en el vector
+vectorExemp[7]<-10
+
+# Introduciendo los nuevos elementos contenidos en el vector
+vectorExemp
+```
+
+Así mismo, podemos insertar tantos elementos como queramos. Por ejemplo, insertemos 10 elementos que constituyen una secuencia del 10 al 20, en el vector original *vectorExemp*.
+
+```{r}
+# Creando el vector que contiene seis elementos, como antes
+vetorExemp<-c(1,2,3,1,2,3)
+
+# Introduciendo los elementos presentes en el vector
+vetorExemp
+
+# Insertar o insertar 10 elementos desde el séptimo elemento en la matriz
+vetorExemp[7:17]<-seq(from=10, to=20,by=1)
+
+# Introduciendo los nuevos elementos contenidos en el vector
+vetorExemp
+```
+Tenga en cuenta que el número de posiciones informadas entre paréntesis *[]*" se refiere al número de elementos a insertar.
+
+Otra aplicación muy importante de la indexación es eliminar elementos de matrices. Esto se puede hacer simplemente incluyendo el operador "-" que precede a la posición dada. Por ejemplo, usando el vector *Exempvector* original, eliminemos el elemento en la cuarta posición.
+
+```{r}
+# Creando el vector que contiene seis elementos como antes
+vectorExemp<-c(1,2,3,1,2,3)
+
+# Introduciendo los elementos presentes en el vector
+vectorExemp
+
+# Eliminando el elemento en la cuarta posición
+vectorExemp[-4]
+```
+Tenga en cuenta que el número 1 que anteriormente estaba en la cuarta posición de la matriz se ha eliminado.
+
+Lo mismo se puede aplicar a múltiples posiciones usando la función "c()". Por ejemplo, eliminemos las posiciones 3 y 5 del vector anterior.
+
+```{r}
+# Creando el vector que contiene seis elementos como antes
+vectorExemp<-c(1,2,3,1,2,3)
+
+# Introduciendo los elementos presentes en el vector
+vectorExemp
+
+# Eliminando el elemento en la cuarta posición
+vectorExemp[-c(3,5)]
+```
+
+También podemos combinar la búsqueda recursiva de la posición de los elementos con su exclusión. Por ejemplo, usando el vector *Exempvector* original, eliminaremos todos los elementos iguales a 2.
+
+```{r}
+# Creando el vector que contiene seis elementos como antes
+vectorExemp<-c(1,2,3,1,2,3)
+
+# Introduciendo los elementos presentes en el vector
+vectorExemp
+
+# Eliminando todos los elementos iguales a 2
+vectorExemp[-which(vectorExemp==2)]
+```
+Tenga en cuenta que para que esto sea posible, tuvimos que usar la función "cuál()", que informa la posición de los elementos lógicos iguales a VERDADERO que fueron creados por el comando "vectorExemp==2". Si intentáramos posicionar el operador "-" directamente con el comando "vectorExemp==2", se reportaría un mensaje de error.
+
+
+> Todos los comandos y consejos presentados anteriormente se pueden aplicar a varios otros tipos de variables en R (a veces cambiando pequeños detalles). A continuación, aprenderemos un poco sobre otro tipo de variables que son muy comunes en el uso de R y aplicaremos algunos de los comandos descritos anteriormente para identificar y manipular datos.
+
+Además de los vectores, existen otros tipos de objetos que son muy útiles y constantemente utilizados en R. Estos objetos son *matrices*, *data frames*, *arrays* y *lists*. Cada uno de ellos tiene sus peculiaridades, que los convierten en objetos muy útiles para almacenar diferentes tipos de datos.
+
+
+**Matrices**
+
+Los arreglos son objetos que almacenan información **homogénea** en **dos dimensiones**. Pero, ¿qué significan estas características? La característica de las matrices de almacenar información homogénea se debe a que sólo son capaces de almacenar información de una sola clase de elementos (*numéricos*, *carácter*, *factor*, *lógicos*). El almacenamiento de datos en dos dimensiones se debe a la presencia de filas y columnas en este tipo de objetos.
+
+La presencia de filas y columnas garantiza unas características diferenciadas para las matrices con respecto a los vectores, vistos anteriormente. Las matrices se pueden crear en R usando el comando "matrix()". Los argumentos que se deben informar para este comando son: "*data=*", "*nrow=*", "*ncol=*". El argumento "*data=*" corresponde a los datos que se insertan en la matriz. Es importante recalcar que en este caso, el número de información debe corresponder al número de filas y columnas creadas en la matriz por los comandos "*nrow=*" y "*ncol=*", respectivamente. Por ejemplo, si creamos una matriz con 3 filas y 3 columnas, debemos informar 9 elementos para completar la matriz.
+
+```{r}
+# Creando una matriz que contiene 3 filas y 3 columnas y rellenando 
+# con valores del 1 al 9
+matrizA<-matrix(data=1:9, nrow=3, ncol=3)
+
+# Visualización de la matriz creada, en la consola
+matrizA
+```
+
+Tenga en cuenta que los números se han llenado en la matriz usando las columnas. Los números del 1 al 3 se almacenaron en la primera columna, del 4 al 6 en la segunda y del 7 al 9 en la tercera. Esto se debe a un argumento que, cuando no se informa, es considerado en su valor predeterminado por la función "matrix()". Este argumento se llama "*byrow=*". Este argumento recibe un valor lógico (TRUE/T o FALSE/F) informando si los valores deben ser llenados en la matriz usando las filas. El valor predeterminado es FALSO, es decir, los valores no se llenarán utilizando las filas, sino las columnas. Podemos cambiar este comportamiento estableciendo el valor dado al argumento en TRUE.
+
+```{r}
+# Crear una matriz que contenga 3 filas y 3 columnas 
+# y llenar con valores del 1 al 9 (llenar usando las líneas)
+matrizA<-matrix(data=1:9, nrow=3, ncol=3, byrow=T)
+
+# Visualización de la matriz creada, en la consola
+matrizA
+```
+Compare las dos matrices A creadas y vea la diferencia.
+
+También podemos probar si el objeto creado realmente es una matriz. Para ello, podemos utilizar las siguientes opciones:
+
+```{r}
+# Creando una matriz que contiene 3 filas y 3 columnas y rellenando con valores del 1 al 9
+matrizA<-matrix(data=1:9, nrow=3, ncol=3)
+
+# Usando la función clase()
+clase(matrizA)
+
+# Usando la función is.matrix()
+es.matrix(matrizA)
+
+# Usando la función str()
+str(matrizA)
+
+```
+La función "class()" informa directamente cuál es la clase del objeto utilizado como argumento de la función. En este caso, se informa que se trata de una matriz ("matriz"). La función "is.matrix()" realiza una prueba lógica y devuelve TRUE en caso de que el objeto sea una matriz, lo que sucedió en este caso. La función "str()" no informa directamente que se trata de una matriz, pero podemos inferir del tipo de indexación utilizada para representar los datos. La salida presenta la palabra "int" indicando que los datos insertados en la matriz son enteros numéricos y luego de la información sobre la dimensión de la matriz ([1:3,1:3]) se muestra el contenido de la matriz. Sin embargo, la gran diferencia está en la forma en que se presentan los índices de los valores dentro de los corchetes *[]*.
+
+Debido a que las matrices tienen dos dimensiones (filas y columnas), el sistema de indexación es ligeramente diferente. Como fue posible notar en la salida de la función "str()", hay una coma dentro de los corchetes, separando los números. Con esta estructura podemos informar los índices de las líneas (a la izquierda de la coma) y los índices de las columnas (a la derecha de la coma).
+
+Por ejemplo, utilizando *matrizA* creada al llenar los datos por columnas, recuperaremos el valor asignado en la primera fila y en la segunda columna de la matriz creada.
+
+```{r}
+# Creando una matriz que contiene 3 filas y 3 columnas y rellenando con valores del 1 al 9
+matrizA<-matrix(data=1:9, nrow=3, ncol=3)
+
+# Extrayendo el elemento asignado en la primera fila y segunda columna de la matriz
+matrizA[1,2]
+```
+Tenga en cuenta que el número 4 es el elemento presente en esta posición. Intente cambiar los valores dentro de los corchetes para ver qué números se informan.
+
+Este proceso de indexación es muy útil para varias funciones, con él podemos extraer subconjuntos de una matriz y crear otra matriz que contenga este subconjunto de filas y columnas.
+
+Por ejemplo, creemos una submatriz que contenga todas las filas y solo las columnas 1 y 3 de la matriz original (*matrizA*).
+
+```{r}
+# Creando una matriz que contiene 3 filas y 3 columnas y rellenando con valores del 1 al 9
+matrizA<-matrix(data=1:9, nrow=3, ncol=3)
+
+# Visualización de los valores contenidos en matrizA
+
+matrizA
+
+# Extrayendo el subconjunto de filas y columnas para asignarlo en la nueva matriz
+subMatrizA<-matrizA[,c(1,3)]
+
+# Mostrar los valores insertados en el subarreglo creado
+subMatrizA
+```
+Tenga en cuenta que en la submatriz creada, se mantuvieron todas las filas. Sin embargo, solo están presentes las columnas seleccionadas. La ausencia de valores a la izquierda de la coma se interpreta como un comando para que se utilicen todas las líneas. Lo mismo se puede aplicar para seleccionar todas las columnas y algunas filas. Intente realizar este procedimiento.
+
+También es posible eliminar filas y columnas de matrices utilizando el operador "-". Por ejemplo:
+
+```{r}
+# Creando una matriz que contiene 3 filas y 3 columnas y rellenando con valores del 1 al 9
+matrizA<-matrix(data=1:9, nrow=3, ncol=3)
+
+# Visualización de los valores contenidos en matrizA
+
+matrizA
+
+# Eliminando la columna 2 de matrixA y mostrando el resultado en la consola
+matrizA[,-2]
+
+# Eliminando la línea 3 de matrixA y mostrando el resultado en la consola
+matrizA[-3,]
+
+```
+
+Para facilitar la identificación de los datos insertados en las matrices, podemos agregar nombres para las filas y columnas de las matrices. Vamos a crear una matriz a continuación que contenga datos para 3 variables (colocadas en columnas) y 4 personas (colocadas en filas).
+
+```{r}
+
+#Creando la matriz
+matrizB<-matrix(data=c(1,0,1,1,0,0,0,1,1,1,0,0), ncol=3, nrow=4)
+
+#Mostrando los valores contenidos en la matriz
+matrizB
+```
+
+Después de crear la matriz, vamos a nombrar las filas y columnas usando las funciones "rownames()" y "colnames()", respectivamente.
+
+```{r}
+# Nombrando las líneas de la matriz creada previamente
+rownames(matrizB)<-c("Ind1", "Ind2", "Ind3", "Ind4")
+
+# Nombrando las columnas de la matriz creada previamente
+colnames(matrizB)<-c("Variable_1", "Variable_2", "Variable_3")
+
+# Mostrar la matriz con las filas y columnas nombradas
+matrizB
+```
+Observe cómo las columnas y las filas ahora tienen los nombres dados. También es posible informar los nombres de columna y fila directamente como un argumento de la función "matrix()". Sin embargo, para eso, necesitamos saber cómo funcionan los objetos *list*. En los próximos temas abordaremos este tipo de elementos y volveremos a la creación de matrices para mostrar esta aplicación.
+
+Podemos aplicar el mismo sistema de búsqueda de valores insertados en las matrices para realizar las ediciones necesarias. Por ejemplo, reemplacemos todos los valores cero con 10 en la matriz anterior.
+
+
+```{r}
+# Mostrar la matriz con las filas y columnas nombradas
+matrizB
+
+# Reemplazar valores iguales a cero por 10
+matrizB[matrizB==0]<-10
+
+# Presentando la matriz con los nuevos valores
+
+matrizB
+```
+
+Es posible combinar la identificación de posiciones de elementos específicos, previamente aprendidas mediante vectores, con la selección de subconjuntos en matrices. Esto se hace de una manera muy sencilla. Una forma de hacer esto es encontrar el patrón especificado en una columna e insertarlo en un nuevo elemento. Por ejemplo, utilizando la matriz creada anteriormente, creemos una submatriz que contenga todas las columnas, pero solo aquellas líneas que tengan un valor igual a 10 en la columna "Variable_3".
+
+
+```{r}
+# Mostrar la matriz con las filas y columnas nombradas
+matrizB
+
+# Obtener una submatriz a partir de filas que tienen elementos iguales a 10 en la columna Variable_3
+submatrizB<-matrizB[which(matrizB[,"Variable_3"]==10),]
+
+# Presentando la sub-matriz creada
+
+submatrizB
+```
+Tenga en cuenta que elegí usar la función "cuál()" junto con el comando "matrizB$Variavel_3==10". Esta elección se hizo porque usando la función "cuál()", también podemos eliminar estas líneas usando el operador "-". Observe cómo la salida contenida en *submatrixB* tiene solo las filas seleccionadas del contenido de la columna "Variable_3". Este es un procedimiento muy útil para el filtrado y manejo de bases de datos.
+
+Otra función muy útil al trabajar con matrices es la función "t()". Esta función está relacionada con la acción de transponer el contenido de la matriz. Es muy sencillo de aplicar. El único argumento a pasar es una matriz. Usemos la *matrizB* creada originalmente para ejemplificar el proceso.
+
+```{r}
+
+#Creando la matriz
+matrizB<-matrix(data=c(1,0,1,1,0,0,0,1,1,1,0,0), ncol=3, nrow=4)
+
+# Nombrando las líneas de la matriz creada previamente
+rownames(matrizB)<-c("Ind1", "Ind2", "Ind3", "Ind4")
+
+# Nombrando las columnas de la matriz creada previamente
+colnames(matrizB)<-c("Variable_1", "Variable_2", "Variable_3")
+
+#Mostrando la matrizB original
+matrizB
+
+#Transposición de la matriz B creada
+transMatrizB<-t(matrizB)
+
+# Mostrar el resultado en la consola
+
+transMatrizB
+```
+
+Las matrices son objetos muy útiles para almacenar y realizar operaciones en R. Todos los tipos de operaciones que involucran álgebra matricial se pueden realizar en R. Sin embargo, nuestro curso no se centrará en esta área.
+
+
+**Data Frame**
+
+Los *Data Frames* son un tipo de objeto muy importante en R. Al igual que los arreglos, los *Data Frames* se organizan en una estructura bidimensional. Sin embargo, permiten la presencia de elementos heterogéneos. Es decir, puede estar presente más de una clase de elementos. Los *Data Frames* son solo tablas dentro del entorno R. Por lo tanto, los utilizaremos constantemente.
+
+Todos los procedimientos descritos anteriormente para matrices son aplicables para *Data Frames*.
+
+**CONSEJO:** Las columnas y filas contenidas en matrices o Data Frames en R tienen las mismas características que los vectores. Es decir, cada fila y cada columna de una matriz o Data Frames es un vector. Por lo tanto, podemos aplicar todos los procedimientos descritos anteriormente a cada uno de ellos.
+
+La creación de *Data Frames* en R se realiza mediante la función "data.frame()". La forma de usar esta función es muy específica y utiliza el concepto descrito anteriormente, donde cada línea y columna del *Data Frames* es un vector. Como argumentos básicos de la función "data.frame()" debemos informar los vectores que constituirán las columnas de la tabla. Por ejemplo, creemos un *Data Frames* que contenga 3 variables (colocadas en columnas) y 4 individuos (colocados en filas), como en *matrizB*.
+
+```{r}
+#Creación del Data Frames que contiene 3 columnas y 4 filas
+dataframeA<-data.frame(Variable_1=c(1,0,1,1), Variable_2=c(0,0,0,1), Variable_3=c(1,1,0,0))
+
+#Mostrando el contenido del Data Frames creado
+dataframeA
+```
+Tenga en cuenta que debido a que informamos el nombre de las variables que componían las columnas del *Data frame*, nuestra tabla ya tiene el nombre de las columnas. Podemos agregar nombres de filas simplemente usando la función "rownames()".
+
+```{r}
+#Creación del Data Frames que contiene 3 columnas y 4 filas
+rownames(dataframeA) <-c ("ind1", "ind2", "ind3", "ind4")
+
+#Mostrando el contenido del Data Frames creado
+dataframeA
+```
+Tenga en cuenta que ahora las líneas también tienen nombre.
+
+Para entender un poco más sobre la estructura de *Data Frames*, usemos uno de los varios ejemplos contenidos en R y que se pueden importar usando la función "data()". El *Data Frame* que vamos a usar como ejemplo será el "mtcars" que contiene información extraída sobre el desempeño de los autos en el periodo 1973-1974 y publicada en la revista Motor Trend US.
+
+```{r}
+# Importar el Data Frames mtcars en un objeto llamado dataframe_mtcars
+data(mtcars)
+dataframe_mtcars<-mtcars
+
+# Mostrar las primeras seis filas de todas las columnas del Data Frames
+head(dataframe_mtcars)
+
+```
+Tenga en cuenta que hay modelos de automóviles contenidos en las filas y algunas variables contenidas en las columnas. Sin embargo, ¿cuántas observaciones tenemos en esta tabla? Podemos extraer esta información usando la función "dim()". Esta función mostrará las dimensiones de la tabla (o matriz, o cualquier objeto bidimensional), es decir, el número de filas y columnas.
+
+```{r}
+
+dim (dataframe_mtcars)
+
+```
+Tenga en cuenta que tenemos 32 observaciones (32 modelos de automóviles) que se evalúan en términos de 11 variables. Si está interesado en encontrar una descripción de cada variable, puede acceder al material que contiene la descripción de esta base de datos a través del comando "?mtcars".
+
+Se puede acceder a una descripción más completa de las dimensiones de la tabla, así como la clase de cada columna presente en la base de datos, utilizando el comando "str()".
+
+```{r}
+
+str(dataframe_mtcars)
+
+```
+Tenga en cuenta que el comando describe que la base de datos contiene 32 observaciones para 11 variables, justo al comienzo de la salida. Luego hay una breve descripción de la clase de elementos contenidos en cada columna. En este caso, todos son numéricos. Siguiendo esta clasificación, es posible ver una presentación de los primeros elementos asignados en cada columna.
+
+
+Usando la base de datos mtcars, vamos a aplicar algunos procedimientos de manipulación de datos en Data Frames. La segunda columna de la base de datos mtcars contiene el número de cilindros que tiene cada coche. Apliquemos un filtro a esta columna ("cyl") para que se cree un nuevo Data Frames solo con automóviles con 6 o más cilindros. Además, vamos a crear un tercer Data Frame que contenga esos autos con menos de 6 cilindros.
+
+```{r}
+# Crear un nuevo Data Frames que contenga solo aquellos autos con 6 o más cilindros.
+MaisSeisCyl<-dataframe_mtcars[which(dataframe_mtcars$cyl>=6),]
+MaisSeisCyl
+# Creando un nuevo Data Frames que contenga solo aquellos autos con menos de 6 cilindros.
+MenosSeisCyl<-dataframe_mtcars[which(dataframe_mtcars$cyl<6),]
+MenosSeisCyl
+
+```
+
+**CONSEJO:** El operador ($) se usa para seleccionar una columna presente en un *Data Frames*. Por lo tanto, el comando dataframe_mtcars$cyl informa que la siguiente operación se realizará con la columna "cyl" presente en el *Data Frame*. De esta forma podemos trabajar con la columna con el mismo comportamiento que un vector.
+
+
+El mismo resultado se puede obtener usando el operador "-"
+
+
+```{r}
+# Crear un nuevo Data Frames que contenga solo aquellos autos con 6 o más cilindros.
+MaisSeisCyl<-dataframe_mtcars[-which(dataframe_mtcars$cyl<6),]
+MaisSeisCyl
+
+# Creando un nuevo Data Frames que contenga solo aquellos autos con menos de 6 cilindros.
+MenosSeisCyl<-dataframe_mtcars[-which(dataframe_mtcars$cyl>=6),]
+MenosSeisCyl
+```
+Tenga en cuenta que a pesar de la sutil diferencia, se obtuvo el mismo resultado en ambos sentidos.
+
+Aquí se presentaron algunos conceptos básicos sobre *Data Frames*. Trate de aplicar los conceptos de algunas de las funciones presentadas para vectores y matrices en los *Data Frames*. Por ejemplo, "tail()", "t()", "class()", "is.dataframe()", etc...
+
+Tendremos un módulo dedicado únicamente a la importación de tablas en R. En este módulo podremos profundizar en algunas especificidades de los *Data Frames*, así como comprender cómo funcionan en operaciones y manipulaciones de los más diversos tipos.
+
+**List**
+
+Las listas son quizás los objetos más versátiles de R. Son capaces de almacenar muchos otros tipos de objetos en una sola variable. Esto nos permite agrupar una diversidad muy grande de información en un solo objeto. De esta forma, facilitar nuestra organización y tratamiento de datos.
+
+Las listas se pueden crear usando la función "list()". En este caso, solo necesitamos informar el nombre de cada sección de la lista que se creará y el objeto respectivo que se insertará en esa sección. Por ejemplo, insertemos los objetos *vectorExemp*, *matrizA* y *dataframe_mtcars* creados anteriormente en una lista.
+
+Primero recordemos cómo se crearon cada uno de estos objetos:
+```{r}
+#Creando el vector del 1 al 100 usando la función seq()
+vectorExemp<-seq(from=1,to=100,by=1)
+
+# Creando una matriz que contiene 3 filas y 3 columnas y rellenando con valores del 1 al 9
+matrizA<-matrix(data=1:9, nrow=3, ncol=3)
+
+# Importar el marco de datos mtcars en un objeto llamado dataframe_mtcars
+data(mtcars)
+dataframe_mtcars<-mtcars
+
+```
+
+A continuación, vamos a crear la lista:
+```{r}
+#Creación de la lista que contiene todos los elementos descritos anteriormente
+listA<-list(vector=vectorExemp, matrix=matrizA, Data_Frame=dataframe_mtcars)
+
+#Mostrando el contenido de la lista en la consola
+listA
+```
+Observe cómo se colocan todos los elementos en *listA*.
+
+El proceso de indexación mediante listas es un poco diferente al convencional utilizado por otro tipo de objetos. Sin embargo, la lógica es la misma. Debemos usar la posición entre corchetes *[]*. Sin embargo, si solo usamos un corchete para abrir y cerrar alrededor de la posición, se mostrará una "pieza" de la lista:
+
+```{r}
+# Mostrar el primer elemento de la lista
+listA[1]
+
+```
+Tenga en cuenta que la salida comienza con "Vector", lo que indica que estamos viendo el primer elemento de la lista. Esta estructura es útil para filtrar los elementos de la lista. Sin embargo, con él, no es posible referenciar los elementos contenidos en ese primer elemento de la lista. Por ejemplo, usando solo *listA[1]* no podríamos acceder a los primeros 10 elementos de "Vector". Para que esto sea posible, debemos usar corchetes dobles, seguidos de corchetes simples. Esta es una estructura un tanto extraña, pero la ejemplificaremos a continuación. Por ejemplo, extraigamos las 10 primeras posiciones de "Vector":
+
+```{r}
+# Mostrando los primeros 10 elementos de $Vector
+listA[[1]][1:10]
+```
+Intenta usar la misma estructura para presentar otras partes del mismo vector.
+
+Lo mismo se puede aplicar a matrices y marcos de datos contenidos en listas. Por ejemplo, mostremos las primeras 10 filas y las primeras 5 columnas del *Marco de datos* contenido en la lista. Recordando que ella está en la tercera posición de la lista.
+
+```{r}
+# Mostrar las primeras 10 filas y las primeras 5 columnas de $Data_Frame
+listA[[3]][1:10,1:5]
+```
+
+Podemos usar algunos de los comandos descritos anteriormente para identificar la estructura de los datos contenidos en la lista:
+
+ 
+```{r}
+
+# La función length() mostrará el número de elementos contenidos en la lista
+length(listA)
+
+# La función str() mostrará la estructura general de la lista
+str(listA)
+
+# La función class() se usará para mostrar la clase del objeto
+class(listA)
+
+# La función names() muestra el nombre de cada elemento en la lista
+names(listA)
+```
+
+Tenga en cuenta que en los ejemplos anteriores, se ha introducido una nueva función. Esta es la función "length()". Esta función se puede aplicar a casi cualquier objeto en R e informará la cantidad de elementos en el objeto. En el caso de *listA*, hay 3 elementos en la lista. El comando "str()" ya lo conocemos. Sin embargo, en el caso de listas, presentará una descripción del número de elementos contenidos en la lista ("Lista de 3", en este caso) y una descripción de cada objeto contenido en la lista. La función de clase confirma que estamos analizando una lista por su salida. La función "names()", también nueva para nosotros, presenta el nombre de cada objeto contenido en la lista.
+
+
+Un ejemplo del uso de la función "list()" dentro de otras funciones es la opción de determinar el nombre de líneas y columnas directamente en la función "matrix()". Para eso, debemos usar el argumento "*dimnames=*". Vea un ejemplo a continuación:
+
+```{r}
+
+#Creando la matriz
+matrizB<-matrix(data=c(1,0,1,1,0,0,0,1,1,1,0,0), ncol=3, nrow=4, 
+                dimnames=list(c("Ind1 ", "Ind2", "Ind3", "Ind4"),
+                              c("Variable_1", "Variable_2", "Variable_3")))
+
+#Mostrando los valores contenidos en la matriz
+matrizB
+```
+Tenga en cuenta que la *matrizB* creada con este comando ya tiene nombres de fila y columna.
+
+
+> En este módulo presentamos una serie de consejos relacionados con la creación, manipulación y edición básica de objetos en R. En los siguientes módulos aplicaremos estos conceptos de forma práctica a través de la creación/edición de bases de datos, análisis de estadísticas descriptivas y creación de gráficos. Es muy importante que esta parte esté bien fundamentada para que los siguientes temas se entiendan de una manera más sencilla.
+
+# **Paquetes que usan R**
+
+Probablemente una de las grandes ventajas de R es la gran variedad de paquetes que se pueden instalar. Estos paquetes pueden realizar multitud de funciones complementarias, siendo muy útiles en varios procesos. Actualmente, ya se han creado y puesto a disposición más de 10.000 paquetes en el repositorio oficial de R (CRAN).
+
+Sin embargo, antes de comenzar a trabajar con paquetes en R, debemos hacer algunas definiciones:
+
+1) **¿Qué es un paquete en R?**
+
+Un paquete es una forma de organizar un conjunto de funciones creadas para la ejecución de una determinada tarea. Estas funciones pueden desarrollar nuevas tareas o potenciar la actividad de funciones ya presentes de forma nativa en R. Estas funciones se ejecutan a través de códigos (scripts). Es importante señalar que los paquetes pueden estar compuestos por códigos que utilizan lenguajes distintos al lenguaje R (python, pearl, C++, etc.). Además del "esqueleto" del paquete, que está compuesto por el código, existen otros elementos que son fundamentales en un paquete. La documentación del paquete también forma parte del paquete y estará presente en prácticamente todos los paquetes disponibles en r. La documentación es una parte muy importante, ya que se encarga de describir cómo funciona el paquete, describir cómo se deben ejecutar las funciones, los archivos de entrada, etc. Se puede acceder a la documentación de un paquete de varias maneras. Puede acceder a la página del paquete en el repositorio oficial de R (el CRAN) o acceder directamente desde la terminal. Los comandos que permiten acceder a la documentación de un paquete a través de la terminal son: paqueteDescripción("paquete") y ayuda(paquete = "paquete"). En estos comandos, la palabra "paquete" debe ser reemplazada por el nombre del paquete del que queremos obtener información. además, el paquete también puede contener ejemplos de archivos de entrada y comando, demostrando el funcionamiento de las diferentes funciones, así como la base de datos incluida para algunos análisis. Como se indicó anteriormente en este curso, los paquetes en R están disponibles en repositorios en línea.
+
+2) **¿Qué son los repositorios?**
+
+Un repositorio es un lugar en Internet donde se almacena información disponible para su descarga y consulta. En el caso de R, tenemos algunos repositorios para buscar, descargar e instalar paquetes. El repositorio oficial de R es CRAN (https://cran.r-project.org/). CRAN es un repositorio mantenido por la fundación R. Los paquetes disponibles en CRAN deben someterse a una serie de pruebas y ser aprobados por la comunidad evaluadora. Por lo tanto, en el caso de paquetes que han sido curados. además, existen dos repositorios no oficiales pero muy conocidos y utilizados: Bioconductor (https://www.bioconductor.org/) y Github (https://github.com/). Al igual que CRAN, Bioconductor tiene sus propias reglas para aceptar y publicar paquetes. Bioconductor recibe un grupo de paquetes especializados para análisis dirigidos al campo de las ciencias biológicas, médicas y naturales, entre otros. Muchos paquetes que realizan funciones extremadamente útiles, como análisis de expresión diferencial, anotación de secuencias de nucleótidos, análisis de enriquecimiento, etc. La comunidad que mantiene Bioconductor es muy activa y realiza varias reuniones cada año para discutir el mantenimiento y las mejoras del repositorio. Github es el repositorio más conocido para los llamados proyectos de "código abierto". Este tipo de proyecto está destinado a ser compartido con la comunidad interesada, que puede sugerir mejoras y colaborar con los proyectos. Sin embargo, se debe tener cuidado al usar paquetes presentes solo en Github, ya que no existe un proceso para revisar los paquetes para su publicación en Github.
+
+##### *Instalando paquetes usando R*
+
+1) Instalar paquetes usando R Studio
+
+La figura 1 muestra cómo instalar paquetes en R a través de la interfaz gráfica. En la ventana presente en la esquina inferior derecha de R Studio, hay una pestaña llamada "Packages". Al hacer clic en esta pestaña, se muestran algunas funcionalidades. Justo debajo están los botones "Install" y "Update". Se puede hacer clic en estos botones para instalar o actualizar paquetes en R, respectivamente. Justo debajo, en "User library", es posible notar todos los paquetes ya instalados en R. Al seleccionar las casillas de verificación junto a los paquetes, se cargarán en esa sección de R. Más adelante hablaremos un poco más sobre la carga de paquetes Al hacer clic en actualizaciones, puede seleccionar los paquetes que desea actualizar. En este punto nos centraremos en el proceso de instalación. Una vez que se hace clic en el botón "Install", se abre una nueva ventana. En esta ventana, podemos ver que hay algunas opciones: "Install from", "Packages...", "Install to library" e "Install dependencies". En la opción "Install from" puedes seleccionar el repositorio en el que quieres buscar el paquete. En la opción "Package...", debe escribir el nombre del paquete a instalar. Tenga en cuenta que los nombres de los paquetes también se diferencian por la presencia de letras mayúsculas o minúsculas, así que preste atención. 
+
+2) Instalar paquetes usando la terminal
+
+Además de la opción de instalar paquetes a través de la interfaz gráfica, es posible instalar paquetes a través de la terminal. Para los paquetes que se depositan en CRAN, esto se puede hacer mediante el comando "install.packages()". Este paquete toma como argumento el nombre del paquete a instalar. Por ejemplo, para instalar el paquete *ggplot2*, podemos ejecutar el siguiente comando: install.packages("ggplto2"). Este comando realizará los mismos pasos de instalación que el comando anterior.
+
+En el caso de instalar paquetes desde el repositorio de Bioconductor, la instalación es un poco diferente. Bioconductor tiene su propio comando de instalación de paquetes, "install()", que está disponible a través del paquete BiocManager. Al igual que con "install.packages()", debemos informar el nombre del paquete deseado. A continuación, instalemos el paquete GenomicFeatures, es de Bioconductor. Este es un paquete utilizado para anotar transcripciones. Una descripción un poco más detallada se puede encontrar a continuación, o aquí: https://bioconductor.org/packages/release/bioc/html/GenomicFeatures.html
+
+*A set of tools and methods for making and manipulating transcript centric annotations. With these tools the user can easily download the genomic locations of the transcripts, exons and cds of a given organism, from either the UCSC Genome Browser or a BioMart database (more sources will be supported in the future). This information is then stored in a local database that keeps track of the relationship between transcripts, exons, cds and genes. Flexible methods are provided for extracting the desired features in a convenient format.*
+
+```{r}
+# Es importante recalcar que para ejecutar el siguiente comando es
+# necesario para instalar el paquete BiocManager a través del comando:
+# install.packages("BiocManager")
+
+
+# Instalación de GenomicFeatures
+BiocManager::install("GenomicFeatures")
+```
+
+Toda esta gran secuencia de resultados presentada anteriormente se refiere al proceso de instalación del paquete GenomicFeatures y las dependencias necesarias para ello.
+
+
+##### *Cargando paquetes usando R*
+
+Ahora que hemos aprendido a instalar paquetes en R, debemos aprender a cargarlos en el entorno. Cada vez que se inicia una nueva sesión de R, necesita cargar los paquetes, lo cual es un proceso muy rápido. Esta es una estrategia para hacer más rápido el inicio de las secciones y no consumir tanta memoria, con la carga de paquetes que no serán utilizados. La carga de paquetes se puede realizar mediante dos comandos: "library()" y "require()". Ambos comandos funcionan de la misma manera. La diferencia entre estas funciones es que la función "requerir()" presenta algunos mensajes de advertencia y error al cargar el paquete, lo que puede ser útil en algunos casos. además, si insertamos la salida de "require()" en un objeto, este objeto recibirá un valor lógico (VERDADERO o FALSO), dependiendo de si el paquete está cargado o no. Esto puede ser muy útil cuando se crean scripts que requieren la carga de varios paquetes para crear diferentes puntos de control en el script.
+
+
+##### *Verificando paquetes usando R*
+
+Otro conjunto de funciones que involucran el manejo de paquetes en R lo constituyen las funciones: remove.packages(), remove.packages() y update.packages(). Estas funciones reciben como argumentos el nombre de los paquetes a los que queremos aplicar cada una de las funciones ejecutadas por ellos. La función reove.packges() puede eliminar de su instalación de R un paquete que haya instalado previamente. Sin embargo, la función old.packages() no necesita recibir ningún argumento. Se puede ejecutar sin argumentos y devolverá un conjunto de paquetes que tienen nuevas versiones y se pueden actualizar. Aquí es donde entra en juego la función update.packages(). esta función toma como argumento el nombre de los paquetes que desea actualizar a la última versión disponible.
+
+Este es un conjunto de funciones muy útil en R, para mantener su biblioteca de paquetes. es estar siempre informado sobre las actualizaciones de los paquetes que usaste constantemente.
+
+##### *Algunos paquetes útiles*
+
+Hay una serie de paquetes con funciones muy útiles en R. Además, lógicamente, el uso de cada paquete está directamente relacionado con su carga de trabajo. A continuación, se presentarán algunos paquetes que realizan funciones muy interesantes.
+
+**ggplot2**
+
+ggplot2 es uno de los paquetes más famosos para crear gráficos en R. Con él podemos diseñar gráficos de una manera extremadamente eficiente y hermosa. Además, ggplot2 tiene una serie de argumentos y funciones que te permiten ejecutar funciones que la función "plot()" no es capaz de hacer. A continuación, crearemos un conjunto de datos que simule dos condiciones que contengan valores en diferentes distribuciones normales. Luego, crearemos un gráfico de puntos que contenga una línea de tendencia entre las variables (como hicimos en la clase anterior). Sin embargo, además, agregaremos una etiqueta que contiene un intervalo de confianza del 95 % alrededor de la línea de tendencia.
+
+```{r}
+# Cargando el paquete
+library(ggplot2)
+
+#Crear la base de datos simulada
+data=data.frame(cond = rep(c("condition_1", "condition_2"), each=10), 
+                my_x = 1:100 + rnorm(100,sd=9), 
+                my_y = 1:100 + rnorm(100,sd=16) )
+
+# Trazar el gráfico de barras con la línea de tendencia
+# y el intervalo de confianza del 95%
+ggplot(data, aes(x=my_x, y=my_y)) +
+  geom_point(shape=1) +  
+  geom_smooth(method=lm , color="red", se=TRUE) 
+
+```
+
+El paquete ggplot2 tiene una serie de funciones y argumentos que son específicos de su funcionamiento. Es posible, y ya existen, crear cursos solo para enseñar el uso de diferentes funciones en el paquete ggplot2. Los gráficos ganan mucho en calidad con el uso de este paquete. Por lo tanto, visitar el manual de este paquete e intentar ejecutar algunos comandos presentes en él es algo que sin duda vale la pena.
+
+**plyr**
+
+El paquete plyr fue creado con el objetivo de facilitar el manejo de datos para realizar operaciones o funciones para diferentes subgrupos de datos presentes en una base de datos. Por ejemplo, ajustar un modelo a cada ubicación espacial o punto temporal de su estudio, resumir datos por paneles o colapsar grupos de datos con estructuras complejas para realizar estadísticas descriptivas más simples.
+
+Para ejemplificar cómo el paquete plyr puede convertir una tarea inicialmente compleja en un comando relativamente simple, usaremos el conjunto de datos mpg disponible en el paquete ggplot2. Este conjunto de datos, como mtcars, presenta información sobre el potencial, el consumo y el rendimiento de diferentes automóviles. En el siguiente comando, realizaremos un ANOVA para comparar si existe una diferencia entre el número promedio de cilindros para cada tipo de fabricante de automóviles. Sin embargo, este ANOVA debe realizarse para cada uno de los subconjuntos de automóviles en función del tipo de tracción. Hay 3 tipos diferentes de tracción en esta base de datos. Si quisiéramos hacerlo de la manera convencional, deberíamos dividir esta base de datos en 3 bases nuevas y ejecutar el ANOVA comparando el número promedio de cilindros por fabricante. Sin embargo, con la función "dlplyr()", del paquete plyr, logramos hacer esto en un solo comando.
+
+```{r}
+# Cargando paquetes requeridos
+
+#ggplot2 para acceder a la base de datos de mpg
+library(ggplot2)
+library(plyr)
+library(dplyr)
+
+# Cargando mpg al sistema
+data(mpg)
+
+#Comprobando la estructura de millas por galón
+str(mpg)
+
+#Simplificando la base de datos para tener solo las columnas necesarias
+data <- mpg[,c(1,7:9)]
+str(data)
+
+#Creación de una función para realizar ANOVA basada en una base de datos
+model <- function(data) { aov(cty~manufacturer, data=data) }
+
+#Ejecutar el ANOVA para cada uno de los tipos de trazas contenidos en la columna drv
+anova.output <- dlply(data, .(drv), model)
+
+#Comprobando la salida de anova.output
+anova.output
+
+#Creando una función para obtener los valores de P
+print.p<-function(x) { 
+  c(summary(x)[[1]][["F value"]][[1]], 
+    summary(x)[[1]][["Pr(>F)"]][[1]]) }
+
+res.anova<-lapply(anova.output,print.p)
+
+res.anova <- data.frame(F_Value = unlist(res.anova)[seq_along(unlist(res.anova)) 
+                                                    %% 2 != 0],
+                        P_Value = unlist(res.anova)[seq_along(unlist(res.anova)) 
+                                                    %% 2 == 0],
+                 drive_train = rep(names(res.anova), 
+                            sapply(res.anova, length)))
+
+res.anova
+
+```
+
+Un detalle de la función "dlplyr()" es que no acepta otras funciones como acción a aplicar sobre los datos. Por lo tanto, no podemos informar la fórmula ANOVA como último argumento de la función. Por lo tanto, se creó una función que almacena la fórmula ANOVA y esta función se informó como un argumento de "dlplyr()" como argumento del modelo. Nótese que en el objeto anova.outpt no tenemos los valores de P, en él obtenemos los valores que se pueden usar para obtener los valores de P, usando la función "summary()", como ya mostrado anteriormente. También tenga en cuenta que los resultados se almacenan en una lista. Hay una función base de R que puede trabajar con el manejo de listas, la función "lapply()". Esta función aplica una acción a cada uno de los elementos de la lista. En el último comando presentado arriba, estamos extrayendo los valores del estadístico F (F value) y los valores de P (Pr(>F)), para cada una de las salidas generadas a través del análisis de un elemento dado de la lista anova.output, mediante el comando "summary()".
+
+Con el conjunto de análisis descrito anteriormente, pudimos realizar un grupo de acciones en unas pocas líneas de código que tomarían mucho tiempo si se hicieran manualmente.

@@ -1,0 +1,336 @@
+---
+title: "Introdducción a las anotaciones funcionales"
+author: "Pablo Fonseca"
+date: "14-07-2023"
+output:
+  html_document:
+    df_print: paged
+  github_document: toc:true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, include = TRUE)
+```
+
+# Paquetes a instalar
+
+Antes de comenzar, los siguientes paquetes deben ser instalados:
+
+**biomaRt**
+
+**ggplot2**
+
+**patchwork**
+
+**ggrepel**
+
+**tidyverse**
+
+**gprofiler2**
+
+Todos los paquetes mencionados pueden encontrarse en los repositorios CRAN o Bioconductor. El código para instalar y cargar cada uno de estos paquetes se muestra antes de su uso en el presente tutorial. 
+
+# GO terms
+
+## Paquete: biomaRt
+
+El paquete biomaRt "proporciona una interfaz a una creciente colección de bases de datos
+que implementan la suite de software BioMart (http://www.biomart.org). El paquete
+permite la recuperación de grandes cantidades de datos de manera uniforme sin necesidad de
+conocer los esquemas de las bases de datos subyacentes o escribir consultas SQL complejas". Por lo tanto
+toda la información disponible en la versión en línea de
+de Biomart, utilizando R.
+
+Aquí, utilizaremos el mismo archivo de entrada utilizado en la versión en línea de Biomart.
+
+
+```{r}
+#El siguiente comando se puede utilizar para instalar el paquete
+#(sólo es necesario eliminar el carácter de comentario #)
+#BiocManager::install("biomaRt")
+
+#Carga de los archivos de entrada
+deg.list<-read.table("~/post_doc_Leon/Classes/summer_course_RNA_2023/Functional_annotation/DEG_Vega_2017.txt", h=T, sep="\t")
+
+#Comprobar el archivo importado
+head(deg.list)
+```
+
+```{r }
+#Cargar el paquete
+library(biomaRt)
+```
+
+
+Tras cargar el archivo de entrada y cargar el paquete, es posible iniciar
+la búsqueda de genes dentro de nuestro intervalo seleccionado.
+
+1) El primer paso es elegir la base de datos y el organismo para elegir los
+genes
+
+```{r}
+#El siguiente comando muestra las bases de datos que están disponibles para recuperar información
+#listMarts()
+
+#Elegiremos ENSEMBL_MART_ENSEMBL, que corresponde a Ensembl Genes 91
+#Es necesario crear un objeto del tipo "mart" para cargar la información de la base de datos.
+
+#Esto se realiza con el siguiente comando:
+mart <- useMart("ENSEMBL_MART_ENSEMBL")
+
+#Una vez creado el objeto mart mediante la función useMart(), necesitamos seleccionar
+#el organismo. El siguiente comando se puede utilizar para identificar el correspondiente
+#argumento a cada organismo.
+
+#listDatasets(mart)
+
+#La función useDataset() puede utilizarse para insertar el organismo
+#información en el objeto mart.
+mart <- useDataset("hsapiens_gene_ensembl", mart)
+```
+
+2) Ahora es el momento de definir los filtros y atributos que se recuperarán de la base de datos.
+
+```{r}
+#Definir el filtro que se utilizará para recuperar la información
+filter<-"external_gene_name"
+
+#Crear un vector con los DEG
+value<-deg.list$Gene
+
+#Definir la información a recuperar de la base de datos 
+attributes <- c("external_gene_name","go_id","name_1006",
+                "go_linkage_type", "namespace_1003")
+```
+
+3) Ahora, tras definir los filtros y los atributos, es el momento de recuperar la información
+
+```{r}
+#En este punto, necesitamos informar los objetos creados en los pasos anteriores como argumentos
+#de la función getBM()
+all.genes <- getBM(attributes=attributes, filters=filter, values=value, mart=mart)
+
+#Eliminación de genes sin anotación
+all.genes<-all.genes[-which(all.genes$namespace_1003==""),]
+
+#Comprobar la salidastr(all.genes)
+head(all.genes)
+
+#Guardar la salida
+write.table(all.genes, file="output_biomart_DEG.txt",
+            row.names=F, sep="\t", quote=F)
+```
+
+Utilizando el comando indicado anteriormente, es posible obtener los mismos resultados
+obtenidos en la versión en línea de biomart. Observe que es posible ejecutar
+estos comandos para todos los organismos disponibles en la base de datos Ensembl, para todos los
+
+los filtros y atributos. Consulte el material de ayuda de cada función para obtener
+más información. Por ejemplo "?getBM()".
+
+El manual de biomaRt puede encontrarse aquí:
+
+> https://bioconductor.org/packages/release/bioc/manuals/biomaRt/man/biomaRt.pdf
+
+
+Ahora, vamos a comprobar los resultados y a crear algunos gráficos para resumir la información. 
+
+En primer lugar, podemos comprobar la distribución de los términos GO en las tres categorías: BP, MF y CC.
+
+```{r}
+#El primer paso es crear una tabla con el número de registros por categoría
+
+go.table<-as.data.frame(table(all.genes$namespace_1003))
+
+go.table$value<-round(go.table$Freq/sum(go.table$Freq),4)*100
+
+head(go.table)
+
+```
+
+Ahora, podemos trazar estos resultados como un gráfico circular utilizando ggplot2.
+
+```{r}
+library(ggplot2)
+library(ggrepel)
+library(tidyverse)
+
+# Get the positions
+go.table <- go.table %>% 
+  mutate(csum = rev(cumsum(rev(value))), 
+         pos = value/2 + lead(csum, 1))
+
+go.table$pos<-if_else(is.na(go.table$pos), go.table$value/2, go.table$pos)
+
+ggplot(go.table, aes(x = "" , y = value, fill = fct_inorder(Var1))) +
+  geom_col(width = 1, color = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Pastel1") +
+  geom_label_repel(data = go.table,
+                   aes(y = pos, label = paste0(value, "%")),
+                   size = 4.5, nudge_x = 1, show.legend = FALSE) +
+  guides(fill = guide_legend(title = "GO class")) +
+  theme_void()
+
+```
+
+Ahora podemos comprobar los diez términos más frecuentes dentro de cada clase GO y representarlos gráficamente.
+
+```{r}
+#Filtering the results table for BP and ordering from the most to the less frequent term
+go.bp<-as.data.frame(table(all.genes[which(all.genes$namespace_1003=="biological_process"),
+                       "go_id"]))
+
+go.bp<-go.bp[order(go.bp$Freq, decreasing = T),]
+
+go.bp$Var1<-factor(go.bp$Var1, levels = go.bp$Var1)
+
+head(go.bp)
+
+#Filtering the results table for MF and ordering from the most to the less frequent term
+go.mf<-as.data.frame(table(all.genes[which(all.genes$namespace_1003=="molecular_function"),
+                       "go_id"]))
+
+go.mf<-go.mf[order(go.mf$Freq, decreasing = T),]
+
+go.mf$Var1<-factor(go.mf$Var1, levels = go.mf$Var1)
+
+head(go.mf)
+
+#Filtering the results table for CC and ordering from the most to the less frequent term
+go.cc<-as.data.frame(table(all.genes[which(all.genes$namespace_1003=="cellular_component"),
+                       "go_id"]))
+
+go.cc<-go.cc[order(go.cc$Freq, decreasing = T),]
+
+go.cc$Var1<-factor(go.cc$Var1, levels = go.cc$Var1)
+
+head(go.cc)
+
+```
+
+\newpage
+
+**BP**
+
+```{r}
+library(patchwork)
+
+bar.bp<-ggplot(go.bp[1:10,], aes(x = Var1 , y = Freq, fill=Freq)) +
+  geom_bar(stat = "identity", ) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal() + ggtitle("Biological Process") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("GO term") + ylab("Number of genes")
+
+```
+
+
+**MF**
+
+```{r}
+bar.mf<-ggplot(go.mf[1:10,], aes(x = Var1 , y = Freq, fill = Freq)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal() + ggtitle("Molecular Function") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("GO term") + ylab("Number of genes")
+
+```
+
+**CC**
+
+```{r}
+bar.cc<-ggplot(go.cc[1:10,], aes(x = Var1 , y = Freq, fill = Freq)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal() + ggtitle("Cellular Component") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("GO term") + ylab("Number of genes")
+
+```
+
+Trazar los tres graficos con patchwork:
+
+```{r, fig.width=6, fig.height=8}
+
+bar.bp / bar.mf / bar.cc
+
+```
+
+\newpage
+
+# Rutas metabólicas
+
+## Paquete gprofiler2
+
+Del mismo modo, podemos realizar el mismo análisis para las rutas metabólicas. En este caso, utilizaremos el paquete *gprofiler2* para realizar la anotación utilizando vías KEGG y Reactome.
+
+El paquete gprofiler2 es un conjunto de herramientas para el análisis y la visualización del enriquecimiento funcional, la conversión de identificadores gen/proteína/SNP y el mapeo de genes ortólogos entre especies a través de 'g:Profiler'.
+
+```{r}
+library(gprofiler2)
+
+#Anotación de vías KEGG y Reactome mediante Gene symbols
+res.anno <- gost(query = deg.list$Gene, 
+                   organism = "hsapiens", exclude_iea = FALSE, 
+                   measure_underrepresentation = FALSE, evcodes = TRUE, 
+                   user_threshold = 1, correction_method = "fdr", 
+                   domain_scope = "annotated",
+                   numeric_ns = "", sources = c("KEGG", "REAC"))
+
+#Filtrar la tabla de resultados
+res.anno<-res.anno$result
+
+head(res.anno)
+
+```
+
+\newpage
+
+Ahora, podemos filtrar los resultados de cada base de datos y comparar los resultados.
+
+```{r}
+#Filtrado de resultados de KEGG
+res.kegg<-res.anno[which(res.anno$source=="KEGG"),]
+res.kegg<-res.kegg[order(res.kegg$intersection_size, decreasing = T),]
+res.kegg$term_id<-factor(res.kegg$term_id, levels=res.kegg$term_id)
+
+#Filtrado de resultados de Reactome
+res.reac<-res.anno[which(res.anno$source=="REAC"),]
+res.reac<-res.reac[order(res.reac$intersection_size, decreasing = T),]
+res.reac$term_id<-factor(res.reac$term_id, levels=res.reac$term_id)
+```
+
+
+**KEGG**
+
+```{r, fig.width=5, fig.height=4}
+ggplot(res.kegg[1:10,], aes(x = term_id , y = intersection_size, 
+                                      fill = intersection_size)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal() + ggtitle("KEGG") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("KEGG pathway") + ylab("Number of genes")
+
+res.kegg[1:10,c("term_id","term_name")]
+```
+
+**Reactome**
+
+```{r, fig.width=5, fig.height=4}
+ggplot(res.reac[1:10,], aes(x = term_id , y = intersection_size, 
+                                      fill = intersection_size)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  theme_minimal() + ggtitle("Reactome") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("Reactome pathway") + ylab("Number of genes")
+
+res.reac[1:10,c("term_id","term_name")]
+```
+
+Presta atención al término más frecuente. ¿Tiene sentido? ¿Cómo debemos interpretar estos resultados?
+
+Los términos muy amplios y no relacionados con nuestros fenotipos (al menos en un primer momento) deben interpretarse con cuidado. 
