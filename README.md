@@ -7,9 +7,9 @@
 **Date:** 13/07/23-14/07/2023
 
 ## Table of contents
-* [Información general](#general-info)
-* [Programas](#softwares-and-packages)
-* [Contacto](#contact)
+* [Información general](#Información-general)
+* [Programas](#Software-y-Programas)
+* [Contacto](#Contacto)
 
 ## Información general
 
