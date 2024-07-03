@@ -1,10 +1,10 @@
 # CURSO PRÁCTICO DE INICIACIÓN AL USO DE LA SUPERCOMPUTACIÓN APLICADO AL ANÁLISIS DE DATOS RNA-SEQ. 7ª EDICIÓN - Universidad de Leon
 
-## Introducción a R, Bioconductor y anotaciones funcionales
+## Introducción a R, Bioconductor y Anotaciones funcionales
 
 **Author:** Pablo Fonseca 
 
-**Date:** 11/07/23-12/07/2023
+**Date:** 11/07/24-12/07/2024
 
 ## Índice
 * [Información general](#Información-general)
@@ -17,9 +17,9 @@ Este repositorio contiene el material necesario para las prácticas que se reali
 
 ### Enlace para los tutoriales de los módulos
 
-**Introducción a R y Bioconductor:** [https://pablobio.github.io/CursoVeranoRNASeq_2023/intro_R_bioconductor.html](https://pablobio.github.io/CursoVeranoRNASeq_2023/intro_R_bioconductor.html)
+**Introducción a R y Bioconductor:** [https://pablobio.github.io/CursoVeranoRNASeq_2024/intro_R_bioconductor.html](https://pablobio.github.io/CursoVeranoRNASeq_2024/intro_R_bioconductor.html)
 
-**Introducción a las anotaciones funcionales:** [https://pablobio.github.io/CursoVeranoRNASeq_2023/intro_anotaciones_funcionales.html](https://pablobio.github.io/CursoVeranoRNASeq_2023/intro_anotaciones_funcionales.html)
+**Introducción a las anotaciones funcionales:** [https://pablobio.github.io/CursoVeranoRNASeq_2024/intro_anotaciones_funcionales.html](https://pablobio.github.io/CursoVeranoRNASeq_2024/intro_anotaciones_funcionales.html)
 
 ### Database
 
